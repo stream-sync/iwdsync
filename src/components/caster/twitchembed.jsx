@@ -1,7 +1,11 @@
 import React from 'react'
 
 export function getTwitchEmbedUrl(config, chat = false) {
-    let parent = 'localhost'
+    let parent = 'iwdsync.vercel.app'
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        // dev code
+        parent = 'localhost'
+    }
     if (chat) {
         return `https://www.twitch.tv/embed/${config.twitch_channel}/chat?parent=${parent}`
     } else {
