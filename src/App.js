@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    // Link
+} from 'react-router-dom'
+import { Caster } from './components/caster/caster'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div>
+            <Router>
+                <div>
+                    <Switch>
+                        {/* <Route path="/"> */}
+                        {/*   <Home /> */}
+                        {/* </Route> */}
+                        <Route path="/caster/:caster" component={Caster} />
+                    </Switch>
+
+                    <div style={{ paddingLeft: 15, color: 'grey' }}>
+                        <div>
+                            Written by <a href="https://brianperrett.com/">Brian</a>
+                        </div>
+                        <div style={{ height: 20 }}></div>
+                    </div>
+                </div>
+            </Router>
+        </div>
+    )
 }
 
-export default App;
+export default App
