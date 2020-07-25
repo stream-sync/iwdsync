@@ -1,32 +1,38 @@
 import React from 'react'
-import YouTube from 'react-youtube'
 
 export function YoutubeEmbed(props) {
-    let config = props.config
-    if (config.youtube_live_url) {
-        let id = config.youtube_live_url.split('?v=')[1]
-        config.youtube_id = id
-        config.youtube_live_url =
-            config.youtube_live_url.replace('/watch?v=', '/embed/') + '?autoplay=1'
+    let youtube_live_url = props.youtube_live_url
+    const width = props.width || 640
+    if (youtube_live_url) {
+        // let id = youtube_live_url.split('?v=')[1]
+        youtube_live_url =
+            youtube_live_url.replace('/watch?v=', '/embed/') + '?autoplay=1'
     }
 
-    const opts = {
-        height: '390',
-        width: '640',
-        playerVars: {
-            // https://developers.google.com/youtube/player_parameters
-            autoplay: 1,
-        },
-    }
     return (
         <div>
-            {config.youtube_id && (
-                <YouTube
-                    videoId={config.youtube_id} // defaults -> null
-                    id="youtube-embed" // defaults -> null
-                    opts={opts}
-                />
+            {youtube_live_url && (
+                <YoutubeIframe width={width} url={youtube_live_url} />
             )}
+        </div>
+    )
+}
+
+function YoutubeIframe(props) {
+    return (
+        <div
+            style={{maxWidth: props.width, width: props.width}}
+            className="video-wrap">
+            <div className="video-container">
+                <iframe
+                    title="youtube-embed"
+                    src={props.url}
+                    frameBorder="0"
+                    autoplay='on'
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                ></iframe>
+            </div>
         </div>
     )
 }

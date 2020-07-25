@@ -1,4 +1,5 @@
 import React from 'react'
+import { getHeight } from '../../helper/video'
 
 export function getTwitchEmbedUrl(channel, chat = false) {
     let parent = 'iwdsync.vercel.app'
@@ -15,18 +16,24 @@ export function getTwitchEmbedUrl(channel, chat = false) {
 
 export function TwitchEmbed(props) {
     const config = props.config
+    const width = props.width || 640
+
     return (
         <div>
             {config && config.twitch_channel && (
-                <iframe
-                    title="twitch-embed"
-                    src={getTwitchEmbedUrl(config.twitch_channel)}
-                    height={390}
-                    width={640}
-                    frameBorder=""
-                    scrolling=""
-                    allowFullScreen={true}
-                ></iframe>
+                <div style={{ maxWidth: width, width }} className="video-wrap">
+                    <div className="video-container">
+                        <iframe
+                            title="twitch-embed"
+                            src={getTwitchEmbedUrl(config.twitch_channel)}
+                            height={getHeight({ width })}
+                            width={width}
+                            frameBorder=""
+                            scrolling=""
+                            allowFullScreen={true}
+                        ></iframe>
+                    </div>
+                </div>
             )}
         </div>
     )
