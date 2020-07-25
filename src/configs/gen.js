@@ -5,6 +5,12 @@ export const caster_data = {
             title: 'iwilldominate',
             youtube_live_url: 'https://www.youtube.com/watch?v=CJ57y4ZzPzU',
             twitch_channel: 'iwilldominate',
+            lcs: {
+                channel: 'lcs'
+            },
+            lec: {
+                channel: 'lec'
+            },
         }
     }
 }

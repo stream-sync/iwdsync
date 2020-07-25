@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { caster_data } from '../../configs/gen'
 import { TwitchEmbed } from './twitchembed'
 import { TwitchChatEmbed } from './twitchchatembed'
@@ -8,13 +8,20 @@ import queryString from 'query-string'
 
 export function Caster(props) {
     const [ext_config, setExtConfig] = useState({})
+    const [show_chat, setShowChat] = useState('lcs')
     let caster = props.match.params.caster
     const config = caster_data[caster]
 
     const parseData = text => {
         let dat = {}
         for (let line of text.split('\n')) {
-            let [key, val] = [line.split('=')[0], line.split('=').slice(1).join('=')]
+            let [key, val] = [
+                line.split('=')[0],
+                line
+                    .split('=')
+                    .slice(1)
+                    .join('='),
+            ]
             key = key.trim()
             val = val.trim()
             dat[key] = val
@@ -32,17 +39,14 @@ export function Caster(props) {
         if (caster) {
             if (config.preset === undefined) {
                 url = `https://cors-anywhere.herokuapp.com/${config.config_url}`
-            }
-            else {
+            } else {
                 setExtConfig(config.preset)
             }
         } else if (qs.config) {
             if (qs.config.indexOf('/raw/') === -1) {
                 let haste_id = qs.config.split('hastebin.com/')[1].split('.')[0]
                 url = `https://cors-anywhere.herokuapp.com/https://hastebin.com/raw/${haste_id}`
-
-            }
-            else {
+            } else {
                 url = `https://cors-anywhere.herokuapp.com/${qs.config}`
             }
         }
@@ -60,21 +64,29 @@ export function Caster(props) {
                 <>
                     <h1 style={{ textAlign: 'center' }}>{ext_config.title}</h1>
                     <br />
-                    <div style={{textAlign: 'center'}}>
-                        <Link to='/'>go home</Link>
+                    <div style={{ textAlign: 'center' }}>
+                        <Link to="/">go home</Link>
                     </div>
                     <div style={{ height: 100 }}></div>
                     <div style={{ display: 'flex', margin: 'auto', flexWrap: 'wrap' }}>
+                        {show_chat !== '' && (
+                            <div style={{ margin: 'auto' }}>
+                                <TwitchChatEmbed config={ext_config} channel={show_chat} />
+                            </div>
+                        )}
+
                         <div style={{ margin: 'auto' }}>
                             <TwitchChatEmbed config={ext_config} />
                         </div>
 
                         <div style={{ margin: 'auto' }}>
-                            <TwitchEmbed config={ext_config} />
-                        </div>
+                            <div>
+                                <TwitchEmbed config={ext_config} />
+                            </div>
 
-                        <div style={{ margin: 'auto' }}>
-                            <YoutubeEmbed config={ext_config} />
+                            <div>
+                                <YoutubeEmbed config={ext_config} />
+                            </div>
                         </div>
                     </div>
                 </>
