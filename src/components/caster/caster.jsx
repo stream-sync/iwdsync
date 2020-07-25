@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { caster_data } from '../../configs/gen'
 import { TwitchEmbed } from './twitchembed'
 import { TwitchChatEmbed } from './twitchchatembed'
@@ -9,20 +8,42 @@ import queryString from 'query-string'
 
 export function Caster(props) {
     const [ext_config, setExtConfig] = useState({})
-    const [show_chat, setShowChat] = useState('lcs')
-    const [youtube_width, setYoutubeWidth] = useState(1280)
+    const [show_chat, setShowChat] = useState('')
+    const [caster_chat, setCasterChat] = useState(true)
+    const [youtube_width, setYoutubeWidth] = useState('fill with chat')
     const [twitch_width, setTwitchWidth] = useState(640)
     const [show_twitch_in_youtube, setShowTwitchInYoutube] = useState(true)
+    const [window_width, setWindowWidth] = useState(window.innerWidth)
     let caster = props.match.params.caster
     const config = caster_data[caster]
+    const chat_width = 300
 
-    console.log(youtube_width)
+    let chat_count = 0
+    if (show_chat !== '') {
+        chat_count++
+    }
+    if (caster_chat) {
+        chat_count++
+    }
 
-    const mini_twitch_width = parseInt(0.19 * youtube_width)
-    const mini_twitch_bottom_pos = parseInt(getHeight({ width: youtube_width }) * 0.225)
+    const chat_width_total = chat_count * chat_width
 
-    console.log(mini_twitch_width)
-    console.log(mini_twitch_bottom_pos)
+    let youtube_width_actual = youtube_width
+    if (youtube_width === 'fill') {
+        youtube_width_actual = window_width - 20
+    } else if (youtube_width === 'fill with chat') {
+        youtube_width_actual = window_width - chat_width_total - 20
+    }
+
+    let twitch_width_actual = twitch_width
+    if (twitch_width === 'fill') {
+        twitch_width_actual = window_width - 20
+    } else if (twitch_width === 'fill with chat') {
+        twitch_width_actual = window_width - chat_width_total - 20
+    }
+
+    const mini_twitch_width = parseInt(0.19 * youtube_width_actual)
+    const mini_twitch_bottom_pos = parseInt(getHeight({ width: youtube_width_actual }) * 0.225)
 
     const parseData = text => {
         let dat = {}
@@ -65,6 +86,18 @@ export function Caster(props) {
         return button_style
     }
 
+    // re-set window-width on window resize
+    useEffect(() => {
+        const resize_event_handler = window.addEventListener('resize', () => {
+            if (window.innerWidth !== window_width) {
+                setWindowWidth(window.innerWidth)
+            }
+        })
+        return () => {
+            window.removeEventListener(resize_event_handler)
+        }
+    }, [])
+
     useEffect(() => {
         const options = {
             headers: { 'Access-Control-Allow-Origin': '*' },
@@ -95,7 +128,7 @@ export function Caster(props) {
         }
     }, [caster, config])
 
-    const selectable_widths = [560, 640, 720, 1280, 1600]
+    const selectable_widths = [560, 640, 720, 1280, 1600, 'fill', 'fill with chat']
     const button_group_style = {
         marginLeft: 40,
         display: 'inline-block',
@@ -105,8 +138,8 @@ export function Caster(props) {
         <div>
             {ext_config && (
                 <>
-                    <h1 style={{ textAlign: 'center' }}>{ext_config.title}</h1>
-                    <br />
+                    <h1 style={{ textAlign: 'center', marginBottom: 5 }}>{ext_config.title}</h1>
+
                     {/* <div style={{ textAlign: 'center' }}> */}
                     {/*     <Link to="/">go home</Link> */}
                     {/* </div> */}
@@ -136,6 +169,24 @@ export function Caster(props) {
                     </div>
 
                     <div style={{ ...button_group_style }}>
+                        <h4>{ext_config.twitch_channel} chat</h4>
+                        <div style={{ display: 'inline-block' }}>
+                            <button
+                                style={getButtonStyle(caster_chat === false)}
+                                onClick={() => setCasterChat(false)}
+                            >
+                                Off
+                            </button>
+                            <button
+                                style={getButtonStyle(caster_chat === true)}
+                                onClick={() => setCasterChat(true)}
+                            >
+                                On
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style={{ ...button_group_style }}>
                         <h4>Youtube Video Width</h4>
                         <div style={{ display: 'inline-block' }}>
                             {selectable_widths.map(pixel_width => {
@@ -145,7 +196,8 @@ export function Caster(props) {
                                         style={getButtonStyle(pixel_width === youtube_width)}
                                         onClick={() => setYoutubeWidth(pixel_width)}
                                     >
-                                        {pixel_width}px
+                                        {pixel_width}
+                                        {typeof pixel_width === 'string' ? '' : 'px'}
                                     </button>
                                 )
                             })}
@@ -156,7 +208,6 @@ export function Caster(props) {
                         <h4>Twitch Video Style</h4>
 
                         <div>
-                            <h5>Style</h5>
                             <button
                                 style={getButtonStyle(show_twitch_in_youtube === false)}
                                 onClick={() => setShowTwitchInYoutube(false)}
@@ -185,7 +236,8 @@ export function Caster(props) {
                                                     )}
                                                     onClick={() => setTwitchWidth(pixel_width)}
                                                 >
-                                                    {pixel_width}px
+                                                    {pixel_width}
+                                                    {typeof pixel_width === 'string' ? '' : 'px'}
                                                 </button>
                                             )
                                         })}
@@ -195,28 +247,28 @@ export function Caster(props) {
                         </div>
                     </div>
 
-                    <div style={{ height: 100 }}></div>
+                    <div style={{ height: 20 }}></div>
                     <div style={{ display: 'flex', margin: 'auto', flexWrap: 'wrap' }}>
                         {show_chat !== '' && (
                             <div style={{ margin: 'auto' }}>
-                                <TwitchChatEmbed config={ext_config} channel={show_chat} />
+                                <TwitchChatEmbed
+                                    width={chat_width}
+                                    config={ext_config}
+                                    channel={show_chat}
+                                />
                             </div>
                         )}
 
                         <div style={{ margin: 'auto' }}>
-                            <TwitchChatEmbed config={ext_config} />
-                        </div>
-
-                        <div style={{ margin: 'auto' }}>
                             {!show_twitch_in_youtube && (
                                 <div>
-                                    <TwitchEmbed width={twitch_width} config={ext_config} />
+                                    <TwitchEmbed width={twitch_width_actual} config={ext_config} />
                                 </div>
                             )}
 
                             <div style={{ position: 'relative' }}>
                                 <YoutubeEmbed
-                                    width={youtube_width}
+                                    width={youtube_width_actual}
                                     youtube_live_url={ext_config.youtube_live_url}
                                 />
 
@@ -238,6 +290,12 @@ export function Caster(props) {
                                 )}
                             </div>
                         </div>
+
+                        {caster_chat && (
+                            <div style={{ margin: 'auto' }}>
+                                <TwitchChatEmbed width={chat_width} config={ext_config} />
+                            </div>
+                        )}
                     </div>
 
                     <div style={{ height: 200 }}></div>
