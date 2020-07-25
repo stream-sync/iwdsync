@@ -30,7 +30,12 @@ export function Caster(props) {
         let qs = queryString.parse(window.location.search)
         let url = undefined
         if (caster) {
-            url = `https://cors-anywhere.herokuapp.com/${config.config_url}`
+            if (config.preset === undefined) {
+                url = `https://cors-anywhere.herokuapp.com/${config.config_url}`
+            }
+            else {
+                setExtConfig(config.preset)
+            }
         } else if (qs.config) {
             if (qs.config.indexOf('/raw/') === -1) {
                 let haste_id = qs.config.split('hastebin.com/')[1].split('.')[0]
