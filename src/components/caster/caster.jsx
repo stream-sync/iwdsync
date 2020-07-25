@@ -3,10 +3,11 @@ import { caster_data } from '../../configs/gen'
 import { TwitchEmbed } from './twitchembed'
 import { TwitchChatEmbed } from './twitchchatembed'
 import { YoutubeEmbed } from './youtubeembed'
+import queryString from 'query-string'
 
 export function Caster(props) {
     const [ext_config, setExtConfig] = useState({})
-    const caster = props.match.params.caster
+    let caster = props.match.params.caster
     const config = caster_data[caster]
 
     const parseData = text => {
@@ -25,8 +26,14 @@ export function Caster(props) {
             headers: { 'Access-Control-Allow-Origin': '*' },
             origin: null,
         }
+        let qs = queryString.parse(window.location.search)
+        let url = undefined
         if (caster) {
-            let url = `https://cors-anywhere.herokuapp.com/${config.config_url}`
+            url = `https://cors-anywhere.herokuapp.com/${config.config_url}`
+        } else if (qs.config) {
+            url = `https://cors-anywhere.herokuapp.com/${qs.config}`
+        }
+        if (url) {
             fetch(url, options).then(response => {
                 response.text().then(text => {
                     parseData(text)
@@ -36,21 +43,20 @@ export function Caster(props) {
     }, [caster, config])
     return (
         <div>
-            <h1 style={{textAlign: 'center'}}>{caster}</h1>
-            <div style={{ height: 100 }}></div>
             {ext_config && (
                 <>
-                    <div style={{display: 'flex', margin: 'auto', flexWrap: 'wrap'}}>
-
-                        <div style={{margin: 'auto'}}>
+                    <h1 style={{ textAlign: 'center' }}>{ext_config.title}</h1>
+                    <div style={{ height: 100 }}></div>
+                    <div style={{ display: 'flex', margin: 'auto', flexWrap: 'wrap' }}>
+                        <div style={{ margin: 'auto' }}>
                             <TwitchChatEmbed config={ext_config} />
                         </div>
 
-                        <div style={{margin: 'auto'}}>
+                        <div style={{ margin: 'auto' }}>
                             <TwitchEmbed config={ext_config} />
                         </div>
 
-                        <div style={{margin: 'auto'}}>
+                        <div style={{ margin: 'auto' }}>
                             <YoutubeEmbed config={ext_config} />
                         </div>
                     </div>

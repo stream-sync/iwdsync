@@ -7,7 +7,7 @@ export function getTwitchEmbedUrl(config, chat = false) {
         parent = 'localhost'
     }
     if (chat) {
-        return `https://www.twitch.tv/embed/${config.twitch_channel}/chat?parent=${parent}`
+        return `https://www.twitch.tv/embed/${config.twitch_channel}/chat?darkpopout&parent=${parent}`
     } else {
         return `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${parent}`
     }
