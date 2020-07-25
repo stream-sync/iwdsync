@@ -3,7 +3,7 @@ export const caster_data = {
         config_url: 'https://hastebin.com/raw/ucubenoqay',
         preset: {
             title: 'iwilldominate',
-            youtube_live_url: 'https://www.youtube.com/watch?v=d2Hc7eChnio',
+            youtube_live_url: 'https://www.youtube.com/watch?v=yFximT7OFAY',
             twitch_channel: 'iwilldominate',
             lcs: {
                 channel: 'lcs'
