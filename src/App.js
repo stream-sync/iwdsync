@@ -6,7 +6,7 @@ import {
     // Link
 } from 'react-router-dom'
 import { Caster } from './components/caster/caster'
-import { Home } from './components/general/Home'
+// import { Home } from './components/general/Home'
 import './App.css'
 
 function App() {
@@ -16,9 +16,9 @@ function App() {
                 <div>
                     <Switch>
 
-                        <Route path="/" exact component={Home} />
+                        {/* <Route path="/" exact component={Home} /> */}
                         <Route path="/caster/:caster" component={Caster} />
-                        <Route path="/config" component={Caster} />
+                        {/* <Route path="/config" component={Caster} /> */}
                     </Switch>
 
                     {/* <div style={{ paddingLeft: 15, color: 'grey' }}> */}
