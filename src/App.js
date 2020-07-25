@@ -21,12 +21,12 @@ function App() {
                         <Route path="/config" component={Caster} />
                     </Switch>
 
-                    <div style={{ paddingLeft: 15, color: 'grey' }}>
-                        <div>
-                            Written by <a href="https://brianperrett.com/">Brian</a>
-                        </div>
-                        <div style={{ height: 20 }}></div>
-                    </div>
+                    {/* <div style={{ paddingLeft: 15, color: 'grey' }}> */}
+                    {/*     <div> */}
+                    {/*         Written by <a href="https://brianperrett.com/">Brian</a> */}
+                    {/*     </div> */}
+                    {/*     <div style={{ height: 20 }}></div> */}
+                    {/* </div> */}
                 </div>
             </Router>
         </div>
