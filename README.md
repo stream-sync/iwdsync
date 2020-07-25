@@ -4,6 +4,8 @@ Originally made for IWD to make it easier to link to all necessary sources quick
 
 # ideas
 
-- show lcs twitch chat in transparent window over video?
+- show lcs/lec twitch chat in transparent window over video?
     - toggle on off
-- 
+    - options for showing different chats
+- easier way to set youtube url
+-

@@ -39,7 +39,6 @@ export function Caster(props) {
         } else if (qs.config) {
             if (qs.config.indexOf('/raw/') === -1) {
                 let haste_id = qs.config.split('hastebin.com/')[1].split('.')[0]
-                console.log(haste_id)
                 url = `https://cors-anywhere.herokuapp.com/https://hastebin.com/raw/${haste_id}`
 
             }
