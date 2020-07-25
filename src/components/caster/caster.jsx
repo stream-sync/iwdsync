@@ -107,9 +107,9 @@ export function Caster(props) {
                 <>
                     <h1 style={{ textAlign: 'center' }}>{ext_config.title}</h1>
                     <br />
-                    <div style={{ textAlign: 'center' }}>
-                        <Link to="/">go home</Link>
-                    </div>
+                    {/* <div style={{ textAlign: 'center' }}> */}
+                    {/*     <Link to="/">go home</Link> */}
+                    {/* </div> */}
 
                     <div style={{ ...button_group_style }}>
                         <h4>Riot Chat</h4>
