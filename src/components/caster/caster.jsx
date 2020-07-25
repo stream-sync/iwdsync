@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import {Link} from 'react-router-dom'
 import { caster_data } from '../../configs/gen'
 import { TwitchEmbed } from './twitchembed'
 import { TwitchChatEmbed } from './twitchchatembed'
@@ -54,6 +55,10 @@ export function Caster(props) {
             {ext_config && (
                 <>
                     <h1 style={{ textAlign: 'center' }}>{ext_config.title}</h1>
+                    <br />
+                    <div style={{textAlign: 'center'}}>
+                        <Link to='/'>go home</Link>
+                    </div>
                     <div style={{ height: 100 }}></div>
                     <div style={{ display: 'flex', margin: 'auto', flexWrap: 'wrap' }}>
                         <div style={{ margin: 'auto' }}>
