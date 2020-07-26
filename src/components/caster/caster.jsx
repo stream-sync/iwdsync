@@ -100,9 +100,9 @@ export function Caster(props) {
             }
         })
         return () => {
-            window.removeEventListener(resize_event_handler)
+            window.removeEventListener('resize', resize_event_handler)
         }
-    }, [])
+    }, [window_width])
 
     useEffect(() => {
         const options = {

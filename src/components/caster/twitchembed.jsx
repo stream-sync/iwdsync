@@ -4,7 +4,6 @@ import { getHeight } from '../../helper/video'
 export function getTwitchEmbedUrl(channel, chat = false) {
     let parents = [
         'iwdsync.vercel.app',
-        'iwdsync-3563gkx5d.vercel.app',
         'iwdsync-git-master.antigravity.vercel.app',
         'iwdsync.antigravity.vercel.app',
         'localhost',
