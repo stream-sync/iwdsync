@@ -33,14 +33,14 @@ export function Caster(props) {
     if (youtube_width === 'fill') {
         youtube_width_actual = window_width - 20
     } else if (youtube_width === 'fill with chat') {
-        youtube_width_actual = window_width - chat_width_total - 20
+        youtube_width_actual = window_width - chat_width_total - 25
     }
 
     let twitch_width_actual = twitch_width
     if (twitch_width === 'fill') {
         twitch_width_actual = window_width - 20
     } else if (twitch_width === 'fill with chat') {
-        twitch_width_actual = window_width - chat_width_total - 20
+        twitch_width_actual = window_width - chat_width_total - 25
     }
 
     let mini_twitch_width = parseInt(0.19 * youtube_width_actual)
