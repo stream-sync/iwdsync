@@ -2,15 +2,22 @@ import React from 'react'
 import { getHeight } from '../../helper/video'
 
 export function getTwitchEmbedUrl(channel, chat = false) {
-    let parent = 'iwdsync.vercel.app'
-    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-        // dev code
-        parent = 'localhost'
-    }
+    let parents = [
+        'iwdsync.vercel.app',
+        'iwdsync-3563gkx5d.vercel.app',
+        'iwdsync-git-master.antigravity.vercel.app',
+        'iwdsync.antigravity.vercel.app',
+        'localhost',
+    ]
+    // if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    //     // dev code
+    //     parents = ['localhost']
+    // }
+    const parent_string = parents.map(parent => `&parent=${parent}`).join('')
     if (chat) {
-        return `https://www.twitch.tv/embed/${channel}/chat?darkpopout&parent=${parent}`
+        return `https://www.twitch.tv/embed/${channel}/chat?darkpopout${parent_string}`
     } else {
-        return `https://player.twitch.tv/?channel=${channel}&parent=${parent}`
+        return `https://player.twitch.tv/?channel=${channel}${parent_string}`
     }
 }
 
