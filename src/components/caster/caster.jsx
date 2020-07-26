@@ -13,6 +13,7 @@ export function Caster(props) {
     const [youtube_width, setYoutubeWidth] = useState('fill with chat')
     const [twitch_width, setTwitchWidth] = useState(640)
     const [show_twitch_in_youtube, setShowTwitchInYoutube] = useState(true)
+    const [mini_position, setMiniPosition] = useState('right')
     const [window_width, setWindowWidth] = useState(window.innerWidth)
     let caster = props.match.params.caster
     const config = caster_data[caster]
@@ -42,8 +43,13 @@ export function Caster(props) {
         twitch_width_actual = window_width - chat_width_total - 20
     }
 
-    const mini_twitch_width = parseInt(0.19 * youtube_width_actual)
-    const mini_twitch_bottom_pos = parseInt(getHeight({ width: youtube_width_actual }) * 0.225)
+    let mini_twitch_width = parseInt(0.19 * youtube_width_actual)
+    let mini_twitch_bottom_pos = parseInt(getHeight({ width: youtube_width_actual }) * 0.225)
+    if (mini_position === 'center') {
+        mini_twitch_bottom_pos =
+            getHeight({ width: youtube_width_actual }) / 2 -
+            getHeight({ width: mini_twitch_width }) / 2
+    }
 
     const parseData = text => {
         let dat = {}
@@ -132,6 +138,25 @@ export function Caster(props) {
     const button_group_style = {
         marginLeft: 40,
         display: 'inline-block',
+        maxWidth: 300,
+    }
+
+    let mini_position_style
+    if (mini_position === 'right') {
+        mini_position_style = {
+            bottom: mini_twitch_bottom_pos,
+            right: 0,
+        }
+    } else if (mini_position === 'left') {
+        mini_position_style = {
+            bottom: mini_twitch_bottom_pos,
+            left: 0,
+        }
+    } else if (mini_position === 'center') {
+        mini_position_style = {
+            bottom: mini_twitch_bottom_pos,
+            left: youtube_width_actual / 2 - mini_twitch_width / 2,
+        }
     }
 
     return (
@@ -144,106 +169,130 @@ export function Caster(props) {
                     {/*     <Link to="/">go home</Link> */}
                     {/* </div> */}
 
-                    <div style={{ ...button_group_style }}>
-                        <h4>Riot Chat</h4>
-                        <div style={{ display: 'inline-block' }}>
-                            <button
-                                style={getButtonStyle(show_chat === '')}
-                                onClick={() => setShowChat('')}
-                            >
-                                None
-                            </button>
-                            <button
-                                style={getButtonStyle(show_chat === 'lcs')}
-                                onClick={() => setShowChat('lcs')}
-                            >
-                                LCS
-                            </button>
-                            <button
-                                style={getButtonStyle(show_chat === 'lec')}
-                                onClick={() => setShowChat('lec')}
-                            >
-                                LEC
-                            </button>
-                        </div>
-                    </div>
-
-                    <div style={{ ...button_group_style }}>
-                        <h4>{ext_config.twitch_channel} chat</h4>
-                        <div style={{ display: 'inline-block' }}>
-                            <button
-                                style={getButtonStyle(caster_chat === false)}
-                                onClick={() => setCasterChat(false)}
-                            >
-                                Off
-                            </button>
-                            <button
-                                style={getButtonStyle(caster_chat === true)}
-                                onClick={() => setCasterChat(true)}
-                            >
-                                On
-                            </button>
-                        </div>
-                    </div>
-
-                    <div style={{ ...button_group_style }}>
-                        <h4>Youtube Video Width</h4>
-                        <div style={{ display: 'inline-block' }}>
-                            {selectable_widths.map(pixel_width => {
-                                return (
-                                    <button
-                                        key={`youtube-${pixel_width}`}
-                                        style={getButtonStyle(pixel_width === youtube_width)}
-                                        onClick={() => setYoutubeWidth(pixel_width)}
-                                    >
-                                        {pixel_width}
-                                        {typeof pixel_width === 'string' ? '' : 'px'}
-                                    </button>
-                                )
-                            })}
-                        </div>
-                    </div>
-
-                    <div style={{ ...button_group_style }}>
-                        <h4>Twitch Video Style</h4>
-
-                        <div>
-                            <button
-                                style={getButtonStyle(show_twitch_in_youtube === false)}
-                                onClick={() => setShowTwitchInYoutube(false)}
-                            >
-                                Separate
-                            </button>
-                            <button
-                                style={getButtonStyle(show_twitch_in_youtube === true)}
-                                onClick={() => setShowTwitchInYoutube(true)}
-                            >
-                                Mini Player
-                            </button>
+                    <div style={{ textAlign: 'center' }}>
+                        <div style={{ ...button_group_style }}>
+                            <h4>Riot Chat</h4>
+                            <div style={{ display: 'inline-block' }}>
+                                <button
+                                    style={getButtonStyle(show_chat === '')}
+                                    onClick={() => setShowChat('')}
+                                >
+                                    None
+                                </button>
+                                <button
+                                    style={getButtonStyle(show_chat === 'lcs')}
+                                    onClick={() => setShowChat('lcs')}
+                                >
+                                    LCS
+                                </button>
+                                <button
+                                    style={getButtonStyle(show_chat === 'lec')}
+                                    onClick={() => setShowChat('lec')}
+                                >
+                                    LEC
+                                </button>
+                            </div>
                         </div>
 
-                        <div>
-                            {show_twitch_in_youtube === false && (
-                                <>
-                                    <h5>Video Size</h5>
-                                    <div style={{ display: 'inline-block' }}>
-                                        {selectable_widths.map(pixel_width => {
-                                            return (
-                                                <button
-                                                    key={`twitch-${pixel_width}`}
-                                                    style={getButtonStyle(
-                                                        pixel_width === twitch_width,
-                                                    )}
-                                                    onClick={() => setTwitchWidth(pixel_width)}
-                                                >
-                                                    {pixel_width}
-                                                    {typeof pixel_width === 'string' ? '' : 'px'}
-                                                </button>
-                                            )
-                                        })}
-                                    </div>
-                                </>
-                            )}
+                        <div style={{ ...button_group_style }}>
+                            <h4>{ext_config.twitch_channel} chat</h4>
+                            <div style={{ display: 'inline-block' }}>
+                                <button
+                                    style={getButtonStyle(caster_chat === false)}
+                                    onClick={() => setCasterChat(false)}
+                                >
+                                    Off
+                                </button>
+                                <button
+                                    style={getButtonStyle(caster_chat === true)}
+                                    onClick={() => setCasterChat(true)}
+                                >
+                                    On
+                                </button>
+                            </div>
+                        </div>
+
+                        <div style={{ ...button_group_style }}>
+                            <h4>Youtube Video Width</h4>
+                            <div style={{ display: 'inline-block' }}>
+                                {selectable_widths.map(pixel_width => {
+                                    return (
+                                        <button
+                                            key={`youtube-${pixel_width}`}
+                                            style={getButtonStyle(pixel_width === youtube_width)}
+                                            onClick={() => setYoutubeWidth(pixel_width)}
+                                        >
+                                            {pixel_width}
+                                            {typeof pixel_width === 'string' ? '' : 'px'}
+                                        </button>
+                                    )
+                                })}
+                            </div>
+                        </div>
+
+                        <div style={{ ...button_group_style }}>
+                            <h4>Twitch Video Style</h4>
+
+                            <div>
+                                <button
+                                    style={getButtonStyle(show_twitch_in_youtube === false)}
+                                    onClick={() => setShowTwitchInYoutube(false)}
+                                >
+                                    Separate
+                                </button>
+                                <button
+                                    style={getButtonStyle(show_twitch_in_youtube === true)}
+                                    onClick={() => setShowTwitchInYoutube(true)}
+                                >
+                                    Mini Player
+                                </button>
+                            </div>
+
+                            <div>
+                                {show_twitch_in_youtube === true && (
+                                    <>
+                                        <h5>Mini Player Position</h5>
+                                        <div style={{ display: 'inline-block' }}>
+                                            {['left', 'center', 'right'].map((pos, key) => {
+                                                return (
+                                                    <button
+                                                        key={`${pos}-${key}`}
+                                                        style={getButtonStyle(
+                                                            mini_position === pos,
+                                                        )}
+                                                        onClick={() => setMiniPosition(pos)}
+                                                    >
+                                                        {pos}
+                                                    </button>
+                                                )
+                                            })}
+                                        </div>
+                                    </>
+                                )}
+                                {show_twitch_in_youtube === false && (
+                                    <>
+                                        <h5>Video Size</h5>
+                                        <div style={{ display: 'inline-block' }}>
+                                            {selectable_widths.map(pixel_width => {
+                                                return (
+                                                    <button
+                                                        key={`twitch-${pixel_width}`}
+                                                        style={getButtonStyle(
+                                                            pixel_width === twitch_width,
+                                                        )}
+                                                        onClick={() => setTwitchWidth(pixel_width)}
+                                                    >
+                                                        {pixel_width}
+                                                        {typeof pixel_width === 'string'
+                                                            ? ''
+                                                            : 'px'}
+                                                    </button>
+                                                )
+                                            })}
+                                        </div>
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
 
@@ -275,9 +324,8 @@ export function Caster(props) {
                                 {show_twitch_in_youtube && (
                                     <div
                                         style={{
+                                            ...mini_position_style,
                                             position: 'absolute',
-                                            bottom: mini_twitch_bottom_pos,
-                                            right: 0,
                                             zIndex: 10,
                                             borderRadius: '5%',
                                         }}
