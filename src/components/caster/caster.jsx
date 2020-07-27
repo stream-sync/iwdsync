@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useLocalStorage } from '../../helper/hooks'
 import { caster_data } from '../../configs/gen'
 import { TwitchEmbed } from './twitchembed'
 import { TwitchChatEmbed } from './twitchchatembed'
@@ -8,12 +9,15 @@ import queryString from 'query-string'
 
 export function Caster(props) {
     const [ext_config, setExtConfig] = useState({})
-    const [show_chat, setShowChat] = useState('')
-    const [caster_chat, setCasterChat] = useState(true)
-    const [youtube_width, setYoutubeWidth] = useState('fill with chat')
-    const [twitch_width, setTwitchWidth] = useState(640)
-    const [show_twitch_in_youtube, setShowTwitchInYoutube] = useState(true)
-    const [mini_position, setMiniPosition] = useState('right')
+    const [show_chat, setShowChat] = useLocalStorage('show_chat', '')
+    const [caster_chat, setCasterChat] = useLocalStorage('caster_chat', true)
+    const [youtube_width, setYoutubeWidth] = useLocalStorage('youtube_width', 'fill with chat')
+    const [twitch_width, setTwitchWidth] = useLocalStorage('twitch_width', 640)
+    const [show_twitch_in_youtube, setShowTwitchInYoutube] = useLocalStorage(
+        'show_twitch_in_youtube',
+        true,
+    )
+    const [mini_position, setMiniPosition] = useLocalStorage('mini_position', 'right')
     const [window_width, setWindowWidth] = useState(window.innerWidth)
     let caster = props.match.params.caster
     const config = caster_data[caster]
