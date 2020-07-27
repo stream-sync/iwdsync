@@ -4,11 +4,10 @@ Originally made for IWD to make it easier to link to all necessary sources quick
 
 # ideas
 
-- show lcs/lec twitch chat in transparent window over video?
-    - toggle on off
-    - options for showing different chats
 - easier way to set youtube url
-- twitch chat on right?
-- caster stream on left?
 - youtube muted by default
 - twitch sound on by default
+- sync youtube with IWD using carbo's method
+    - switch to using the controlled player api's
+    - save timestamps to hardstuck OR use some online key/value store
+    - save youtube video to hardstuck?
