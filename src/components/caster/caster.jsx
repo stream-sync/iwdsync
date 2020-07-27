@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useLocalStorage } from '../../helper/hooks'
-import { caster_data } from '../../configs/gen'
+// import { caster_data } from '../../configs/gen'
 import { TwitchEmbed } from './twitchembed'
 import { TwitchChatEmbed } from './twitchchatembed'
 import { YoutubeEmbed } from './youtubeembed'
 import { getHeight } from '../../helper/video'
-import queryString from 'query-string'
+// import queryString from 'query-string'
+import api from '../../api/api'
 
 export function Caster(props) {
-    const [ext_config, setExtConfig] = useState({})
+    // const [ext_config, setExtConfig] = useState({})
+    const [caster_data, setCasterData] = useState({})
+    const [my_caster, setMyCaster] = useState({})
     const [show_chat, setShowChat] = useLocalStorage('show_chat', '')
     const [caster_chat, setCasterChat] = useLocalStorage('caster_chat', true)
     const [youtube_width, setYoutubeWidth] = useLocalStorage('youtube_width', 'fill with chat')
@@ -20,8 +23,18 @@ export function Caster(props) {
     const [mini_position, setMiniPosition] = useLocalStorage('mini_position', 'right')
     const [window_width, setWindowWidth] = useState(window.innerWidth)
     let caster = props.match.params.caster
-    const config = caster_data[caster]
     const chat_width = 300
+
+    useEffect(() => {
+        const data = { url_path: caster }
+        api.caster.get(data).then(response => {
+            setCasterData(response.data.data)
+        })
+
+        api.caster.getMyCaster().then(response => {
+            setMyCaster(response.data.data)
+        })
+    }, [caster])
 
     let chat_count = 0
     if (show_chat !== '') {
@@ -53,23 +66,6 @@ export function Caster(props) {
         mini_twitch_bottom_pos =
             getHeight({ width: youtube_width_actual }) / 2 -
             getHeight({ width: mini_twitch_width }) / 2
-    }
-
-    const parseData = text => {
-        let dat = {}
-        for (let line of text.split('\n')) {
-            let [key, val] = [
-                line.split('=')[0],
-                line
-                    .split('=')
-                    .slice(1)
-                    .join('='),
-            ]
-            key = key.trim()
-            val = val.trim()
-            dat[key] = val
-        }
-        setExtConfig(dat)
     }
 
     const getButtonStyle = is_selected => {
@@ -108,35 +104,35 @@ export function Caster(props) {
         }
     }, [window_width])
 
-    useEffect(() => {
-        const options = {
-            headers: { 'Access-Control-Allow-Origin': '*' },
-            origin: null,
-        }
-        let qs = queryString.parse(window.location.search)
-        let url = undefined
-        if (caster) {
-            if (config.preset === undefined) {
-                url = `https://cors-anywhere.herokuapp.com/${config.config_url}`
-            } else {
-                setExtConfig(config.preset)
-            }
-        } else if (qs.config) {
-            if (qs.config.indexOf('/raw/') === -1) {
-                let haste_id = qs.config.split('hastebin.com/')[1].split('.')[0]
-                url = `https://cors-anywhere.herokuapp.com/https://hastebin.com/raw/${haste_id}`
-            } else {
-                url = `https://cors-anywhere.herokuapp.com/${qs.config}`
-            }
-        }
-        if (url) {
-            fetch(url, options).then(response => {
-                response.text().then(text => {
-                    parseData(text)
-                })
-            })
-        }
-    }, [caster, config])
+    // useEffect(() => {
+    //     const options = {
+    //         headers: { 'Access-Control-Allow-Origin': '*' },
+    //         origin: null,
+    //     }
+    //     let qs = queryString.parse(window.location.search)
+    //     let url = undefined
+    //     if (caster) {
+    //         if (config.preset === undefined) {
+    //             url = `https://cors-anywhere.herokuapp.com/${config.config_url}`
+    //         } else {
+    //             setExtConfig(config.preset)
+    //         }
+    //     } else if (qs.config) {
+    //         if (qs.config.indexOf('/raw/') === -1) {
+    //             let haste_id = qs.config.split('hastebin.com/')[1].split('.')[0]
+    //             url = `https://cors-anywhere.herokuapp.com/https://hastebin.com/raw/${haste_id}`
+    //         } else {
+    //             url = `https://cors-anywhere.herokuapp.com/${qs.config}`
+    //         }
+    //     }
+    //     if (url) {
+    //         fetch(url, options).then(response => {
+    //             response.text().then(text => {
+    //                 parseData(text)
+    //             })
+    //         })
+    //     }
+    // }, [caster, config])
 
     const selectable_widths = [560, 640, 720, 1280, 1600, 'fill', 'fill with chat']
     const button_group_style = {
@@ -165,9 +161,11 @@ export function Caster(props) {
 
     return (
         <div>
-            {ext_config && (
+            {caster_data && (
                 <>
-                    <h1 style={{ textAlign: 'center', marginBottom: 5 }}>{ext_config.title}</h1>
+                    <h1 style={{ textAlign: 'center', marginBottom: 5 }}>
+                        {caster_data.twitch_channel}
+                    </h1>
 
                     {/* <div style={{ textAlign: 'center' }}> */}
                     {/*     <Link to="/">go home</Link> */}
@@ -199,7 +197,7 @@ export function Caster(props) {
                         </div>
 
                         <div style={{ ...button_group_style }}>
-                            <h4>{ext_config.twitch_channel} chat</h4>
+                            <h4>{caster_data.twitch_channel} chat</h4>
                             <div style={{ display: 'inline-block' }}>
                                 <button
                                     style={getButtonStyle(caster_chat === false)}
@@ -306,7 +304,7 @@ export function Caster(props) {
                             <div style={{ margin: 'auto' }}>
                                 <TwitchChatEmbed
                                     width={chat_width}
-                                    config={ext_config}
+                                    config={caster_data}
                                     channel={show_chat}
                                 />
                             </div>
@@ -315,14 +313,14 @@ export function Caster(props) {
                         <div style={{ margin: 'auto' }}>
                             {!show_twitch_in_youtube && (
                                 <div>
-                                    <TwitchEmbed width={twitch_width_actual} config={ext_config} />
+                                    <TwitchEmbed width={twitch_width_actual} config={caster_data} />
                                 </div>
                             )}
 
                             <div style={{ position: 'relative' }}>
                                 <YoutubeEmbed
                                     width={youtube_width_actual}
-                                    youtube_live_url={ext_config.youtube_live_url}
+                                    youtube_live_url={caster_data.youtube_url}
                                 />
 
                                 {show_twitch_in_youtube && (
@@ -336,7 +334,7 @@ export function Caster(props) {
                                     >
                                         <TwitchEmbed
                                             width={mini_twitch_width}
-                                            config={ext_config}
+                                            config={caster_data}
                                         />
                                     </div>
                                 )}
@@ -345,7 +343,7 @@ export function Caster(props) {
 
                         {caster_chat && (
                             <div style={{ margin: 'auto' }}>
-                                <TwitchChatEmbed width={chat_width} config={ext_config} />
+                                <TwitchChatEmbed width={chat_width} config={caster_data} />
                             </div>
                         )}
                     </div>
