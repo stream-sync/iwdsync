@@ -1,8 +1,8 @@
 import axios from 'axios'
 import domain from './domain'
 
-// axios.defaults.xsrfHeaderName = 'X-CSRFToken'
-// axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.withCredentials = true
 
 const BASE = `${domain}/api/caster`
