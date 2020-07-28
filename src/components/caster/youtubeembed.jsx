@@ -18,7 +18,6 @@ export function YoutubeEmbed(props) {
                 my_caster={props.my_caster}
                 width={width}
                 url={youtube_live_url}
-                csrf={props.csrf}
             />
         </div>
     )
@@ -47,7 +46,7 @@ function YoutubeIframe(props) {
     }, [youtube_id])
 
     const updateYoutubeUrl = () => {
-        api.caster.update({ youtube_url }, props.csrf)
+        api.caster.update({ youtube_url })
             .then(() => {
                 window.location.reload()
             })
@@ -58,7 +57,7 @@ function YoutubeIframe(props) {
             const youtube_time = player.playerInfo.currentTime
             const d = new Date()
             const irl_time = d.getTime() / 1000
-            return api.caster.update({ irl_time, youtube_time }, props.csrf)
+            return api.caster.update({ irl_time, youtube_time })
         }
     }
 
