@@ -1,6 +1,5 @@
 import axios from 'axios'
 import domain from './domain'
-import Cookies from 'js-cookie'
 
 // axios.defaults.xsrfHeaderName = 'x-csrftoken'
 // axios.defaults.xsrfCookieName = 'csrftoken'
