@@ -19,7 +19,10 @@ function getMyCaster() {
 
 function update(data, csrf) {
     data.action = 'update'
-    const headers = {'X-CSRFToken': csrf}
+    const headers = {
+        'X-CSRFToken': csrf,
+        'access-control-allow-credentials': 'true',
+    }
     const url = `${BASE}/`
     return axios.post(url, data, {headers})
 }
