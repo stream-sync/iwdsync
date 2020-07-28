@@ -8,7 +8,7 @@ export function YoutubeEmbed(props) {
     let youtube_id = null
     if (youtube_live_url) {
         youtube_id = youtube_live_url.split('?v=')[1]
-        youtube_live_url = youtube_live_url.replace('/watch?v=', '/embed/') + '?autoplay=1'
+        // youtube_live_url = youtube_live_url.replace('/watch?v=', '/embed/') + '?autoplay=1'
     }
 
     return (
@@ -16,7 +16,6 @@ export function YoutubeEmbed(props) {
             <YoutubeIframe
                 caster={props.caster}
                 my_caster={props.my_caster}
-                youtube_id={youtube_id}
                 width={width}
                 url={youtube_live_url}
             />
@@ -28,23 +27,29 @@ function YoutubeIframe(props) {
     const [player, setPlayer] = useState(null)
     const [youtube_url, setYoutubeUrl] = useState('')
     const [timing_data, setTimingData] = useState({})
-    const [offset, setOffset] = useLocalStorage('timing_offset', 0)
+    const [offset, setOffset] = useLocalStorage('timing_offset', 8)
     const [last_timing_update, setLastTimingUpdate] = useLocalStorage('last_timing_update', null)
     const caster = props.caster
     const my_caster = props.my_caster
-    const youtube_id = props.youtube_id
+    let youtube_id
+    if (props.url) {
+        youtube_id = props.url.split('?v=')[1]
+    }
 
     const createPlayer = useCallback(() => {
         if (youtube_id) {
             let new_player = new window.YT.Player('ytplayer', {
-                videoId: props.youtube_id,
+                videoId: youtube_id,
             })
             setPlayer(new_player)
         }
     }, [youtube_id])
 
     const updateYoutubeUrl = () => {
-        return api.caster.update({ youtube_url })
+        api.caster.update({ youtube_url })
+            .then(() => {
+                window.location.reload()
+            })
     }
 
     const updateSyncTime = () => {
@@ -54,11 +59,11 @@ function YoutubeIframe(props) {
         return api.caster.update({ irl_time, youtube_time })
     }
 
-    const moveToSyncTime = (caster_irl_time, caster_youtube_time, offset = 0) => {
+    const moveToSyncTime = (caster_irl_time, caster_youtube_time) => {
         if (player !== null) {
             const my_time = new Date().getTime() / 1000
             const time_delta = my_time - caster_irl_time
-            const synced_time = caster_youtube_time + time_delta + offset
+            const synced_time = caster_youtube_time + time_delta + parseFloat(offset)
             player.seekTo(synced_time, true)
         }
     }
@@ -74,7 +79,9 @@ function YoutubeIframe(props) {
                 setLastTimingUpdate(now)
             })
         } else {
-            setTimingData(timing_data + Math.random())
+            let temp_timing = {...timing_data}
+            temp_timing.caster_youtube_time += .001
+            setTimingData(temp_timing)
         }
     }
 
@@ -82,7 +89,7 @@ function YoutubeIframe(props) {
     useEffect(() => {
         const caster_irl_time = timing_data.irl_time
         const caster_youtube_time = timing_data.youtube_time
-        moveToSyncTime(caster_irl_time, caster_youtube_time, offset)
+        moveToSyncTime(caster_irl_time, caster_youtube_time)
     }, [timing_data])
 
     // set player on load
