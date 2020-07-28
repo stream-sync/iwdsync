@@ -3,21 +3,24 @@ import domain from './domain'
 
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.withCredentials = true
 
+const BASE = `${domain}/api/caster`
 
 function get(params) {
-    const url = `${domain}/api/caster/`
+    const url = `${BASE}/`
     return axios.get(url, {params})
 }
 
 function getMyCaster() {
-    const url = `${domain}/api/caster/get-my-caster`
-    return axios.get(url, {withCredentials: true})
+    const url = `${BASE}/get-my-caster/`
+    return axios.get(url)
 }
 
 function update(data) {
-    const url = `${domain}/api/caster/`
-    return axios.put(url, {...data, withCredentials: true})
+    data.action = 'update'
+    const url = `${BASE}/`
+    return axios.post(url, data)
 }
 
 export default {

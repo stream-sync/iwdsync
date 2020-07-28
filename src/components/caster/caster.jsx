@@ -23,7 +23,6 @@ export function Caster(props) {
     const [mini_position, setMiniPosition] = useLocalStorage('mini_position', 'right')
     const [window_width, setWindowWidth] = useState(window.innerWidth)
 
-
     let caster = props.match.params.caster
     const chat_width = 300
 
@@ -105,36 +104,6 @@ export function Caster(props) {
             window.removeEventListener('resize', resize_event_handler)
         }
     }, [window_width])
-
-    // useEffect(() => {
-    //     const options = {
-    //         headers: { 'Access-Control-Allow-Origin': '*' },
-    //         origin: null,
-    //     }
-    //     let qs = queryString.parse(window.location.search)
-    //     let url = undefined
-    //     if (caster) {
-    //         if (config.preset === undefined) {
-    //             url = `https://cors-anywhere.herokuapp.com/${config.config_url}`
-    //         } else {
-    //             setExtConfig(config.preset)
-    //         }
-    //     } else if (qs.config) {
-    //         if (qs.config.indexOf('/raw/') === -1) {
-    //             let haste_id = qs.config.split('hastebin.com/')[1].split('.')[0]
-    //             url = `https://cors-anywhere.herokuapp.com/https://hastebin.com/raw/${haste_id}`
-    //         } else {
-    //             url = `https://cors-anywhere.herokuapp.com/${qs.config}`
-    //         }
-    //     }
-    //     if (url) {
-    //         fetch(url, options).then(response => {
-    //             response.text().then(text => {
-    //                 parseData(text)
-    //             })
-    //         })
-    //     }
-    // }, [caster, config])
 
     const selectable_widths = [560, 640, 720, 1280, 1600, 'fill', 'fill with chat']
     const button_group_style = {
@@ -321,6 +290,7 @@ export function Caster(props) {
 
                             <div style={{ position: 'relative' }}>
                                 <YoutubeEmbed
+                                    caster={caster}
                                     width={youtube_width_actual}
                                     youtube_live_url={caster_data.youtube_url}
                                     my_caster={my_caster}
