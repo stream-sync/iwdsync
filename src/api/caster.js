@@ -22,7 +22,7 @@ function update(data, csrf) {
     const headers = {
         // 'X-CSRFToken': csrf,
         'access-control-allow-credentials': 'true',
-        'Cookie': `csrftoken=${csrf};`,
+        // 'Cookie': `csrftoken=${csrf};`,
     }
     const url = `${BASE}/`
     return axios.post(url, data, {headers})
