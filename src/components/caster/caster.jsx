@@ -10,6 +10,7 @@ import api from '../../api/api'
 
 export function Caster(props) {
     // const [ext_config, setExtConfig] = useState({})
+    const [csrf, setCsrf] = useState('')
     const [caster_data, setCasterData] = useState({})
     const [my_caster, setMyCaster] = useState({})
     const [show_chat, setShowChat] = useLocalStorage('show_chat', '')
@@ -25,6 +26,13 @@ export function Caster(props) {
 
     let caster = props.match.params.caster
     const chat_width = 300
+
+    // get csrf
+    useEffect(() => {
+        api.caster.getCsrf().then(response => {
+            setCsrf(response.data.data)
+        })
+    }, [])
 
     useEffect(() => {
         const data = { url_path: caster }
@@ -294,6 +302,7 @@ export function Caster(props) {
                                     width={youtube_width_actual}
                                     youtube_live_url={caster_data.youtube_url}
                                     my_caster={my_caster}
+                                    csrf={csrf}
                                 />
 
                                 {show_twitch_in_youtube && (

@@ -18,9 +18,10 @@ function getMyCaster() {
     return axios.get(url)
 }
 
-function update(data) {
+function update(data, csrf) {
     data.action = 'update'
-    let csrf = Cookies.get('csrftoken')
+    data.csrfmiddlewaretoken = csrf
+    // let csrf = Cookies.get('csrftoken')
     const headers = {
         'X-CSRFToken': csrf,
         'access-control-allow-credentials': 'true',
