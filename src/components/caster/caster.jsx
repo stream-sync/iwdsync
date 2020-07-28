@@ -10,7 +10,7 @@ import api from '../../api/api'
 
 export function Caster(props) {
     // const [ext_config, setExtConfig] = useState({})
-    const [csrf, setCsrf] = useState([])
+    const [csrf, setCsrf] = useState('')
     const [caster_data, setCasterData] = useState({})
     const [my_caster, setMyCaster] = useState({})
     const [show_chat, setShowChat] = useLocalStorage('show_chat', '')
@@ -28,11 +28,11 @@ export function Caster(props) {
     const chat_width = 300
 
     // get csrf
-    useEffect(() => {
-        api.caster.getCsrf().then(response => {
-            setCsrf(response.data.data)
-        })
-    }, [])
+    // useEffect(() => {
+        // api.caster.getCsrf().then(response => {
+        //     setCsrf(response.data.data)
+        // })
+    // }, [])
 
     useEffect(() => {
         const data = { url_path: caster }
