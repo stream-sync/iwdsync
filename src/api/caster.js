@@ -1,8 +1,8 @@
 import axios from 'axios'
 import domain from './domain'
 
-// axios.defaults.xsrfHeaderName = 'x-csrftoken'
-// axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'x-csrftoken'
+axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.withCredentials = true
 
 const BASE = `${domain}/api/caster`
@@ -20,8 +20,9 @@ function getMyCaster() {
 function update(data, csrf) {
     data.action = 'update'
     const headers = {
-        'X-CSRFToken': csrf,
-        'access-control-allow-credentials': 'true',
+        // 'X-CSRFToken': csrf,
+        // 'access-control-allow-credentials': 'true',
+        'Cookie': `csrftoken=${csrf};`,
     }
     const url = `${BASE}/`
     return axios.post(url, data, {headers})

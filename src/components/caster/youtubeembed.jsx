@@ -54,10 +54,12 @@ function YoutubeIframe(props) {
     }
 
     const updateSyncTime = () => {
-        const youtube_time = player.playerInfo.currentTime
-        const d = new Date()
-        const irl_time = d.getTime() / 1000
-        return api.caster.update({ irl_time, youtube_time }, props.csrf)
+        if (player !== null) {
+            const youtube_time = player.playerInfo.currentTime
+            const d = new Date()
+            const irl_time = d.getTime() / 1000
+            return api.caster.update({ irl_time, youtube_time }, props.csrf)
+        }
     }
 
     const moveToSyncTime = (caster_irl_time, caster_youtube_time) => {
