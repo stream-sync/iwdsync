@@ -115,6 +115,11 @@ function YoutubeIframe(props) {
                 <div>
                     <div>
                         <input
+                            onKeyDown={event => {
+                                if (event.key === 'Enter') {
+                                    updateYoutubeUrl()
+                                }
+                            }}
                             style={{ display: 'inline-block' }}
                             type="text"
                             value={youtube_url}
@@ -133,6 +138,11 @@ function YoutubeIframe(props) {
                         timing offset
                     </div>
                     <input
+                        onKeyDown={event => {
+                            if (event.key === 'Enter') {
+                                syncToCaster()
+                            }
+                        }}
                         style={{ width: 100 }}
                         type="number"
                         step="0.1"
