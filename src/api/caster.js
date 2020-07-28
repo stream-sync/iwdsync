@@ -21,7 +21,7 @@ function update(data, csrf) {
     data.action = 'update'
     const headers = {
         // 'X-CSRFToken': csrf,
-        // 'access-control-allow-credentials': 'true',
+        'access-control-allow-credentials': 'true',
         'Cookie': `csrftoken=${csrf};`,
     }
     const url = `${BASE}/`
