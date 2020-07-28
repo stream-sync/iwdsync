@@ -22,6 +22,8 @@ export function Caster(props) {
     )
     const [mini_position, setMiniPosition] = useLocalStorage('mini_position', 'right')
     const [window_width, setWindowWidth] = useState(window.innerWidth)
+
+
     let caster = props.match.params.caster
     const chat_width = 300
 
@@ -321,6 +323,7 @@ export function Caster(props) {
                                 <YoutubeEmbed
                                     width={youtube_width_actual}
                                     youtube_live_url={caster_data.youtube_url}
+                                    my_caster={my_caster}
                                 />
 
                                 {show_twitch_in_youtube && (

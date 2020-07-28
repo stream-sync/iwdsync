@@ -17,7 +17,7 @@ function getMyCaster() {
 
 function update(data) {
     const url = `${domain}/api/caster/`
-    return axios.put(url, {data, withCredentials: true})
+    return axios.put(url, {...data, withCredentials: true})
 }
 
 export default {

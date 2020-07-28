@@ -13,7 +13,9 @@ export function YoutubeEmbed(props) {
     return (
         <div>
             {youtube_live_url && (
-                <YoutubeIframe youtube_id={youtube_id} width={width} url={youtube_live_url} />
+                <YoutubeIframe
+                    my_caster={props.my_caster}
+                    youtube_id={youtube_id} width={width} url={youtube_live_url} />
             )}
         </div>
     )
@@ -21,6 +23,8 @@ export function YoutubeEmbed(props) {
 
 function YoutubeIframe(props) {
     const [player, setPlayer] = useState(null)
+    const [youtube_url, setYoutubeUrl] = useState('')
+    const my_caster = props.my_caster
 
     const createPlayer = useCallback(() => {
         let new_player = new window.YT.Player('ytplayer', {
@@ -28,6 +32,18 @@ function YoutubeIframe(props) {
         })
         setPlayer(new_player)
     }, [props.youtube_id])
+
+
+    const updateYoutubeUrl = () => {
+        return api.caster.update({youtube_url})
+    }
+
+    const updateSyncTime = () => {
+        const youtube_time = player.playerInfo.currentTime
+        const d = new Date()
+        const irl_time = d.getTime() / 1000
+        return api.caster.update({irl_time, youtube_time})
+    }
 
     // set player on load
     useEffect(() => {
@@ -47,6 +63,14 @@ function YoutubeIframe(props) {
                 {/*     allowFullScreen */}
                 {/* ></iframe> */}
             </div>
+
+            {my_caster &&
+                <div>
+                    <button onClick={updateSyncTime}>
+                        Set Sync Time for Viewers
+                    </button>
+                </div>
+            }
         </div>
     )
 }
