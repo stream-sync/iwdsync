@@ -56,7 +56,6 @@ function YoutubeIframe(props) {
     const updateSyncIfCaster = useCallback(
         event => {
             if (caster === my_caster.url_path) {
-                console.log(event.target)
                 updateSyncTime(event.target.playerInfo.currentTime)
             }
         },
@@ -90,7 +89,7 @@ function YoutubeIframe(props) {
         let now = new Date()
         now = now.getTime() / 1000
         const delta = Math.abs(last_update - now)
-        if (delta > 20) {
+        if (delta > 5) {
             api.caster.get({ url_path: caster }).then(response => {
                 setTimingData(response.data.data)
                 setLastTimingUpdate(now)
