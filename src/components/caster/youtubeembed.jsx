@@ -5,11 +5,11 @@ import api from '../../api/api'
 export function YoutubeEmbed(props) {
     let youtube_live_url = props.youtube_live_url
     const width = props.width || 640
-    let youtube_id = null
-    if (youtube_live_url) {
-        youtube_id = youtube_live_url.split('?v=')[1]
-        // youtube_live_url = youtube_live_url.replace('/watch?v=', '/embed/') + '?autoplay=1'
-    }
+    // let youtube_id = null
+    // if (youtube_live_url) {
+    // youtube_id = youtube_live_url.split('?v=')[1]
+    // youtube_live_url = youtube_live_url.replace('/watch?v=', '/embed/') + '?autoplay=1'
+    // }
 
     return (
         <div>
@@ -37,39 +37,53 @@ function YoutubeIframe(props) {
         youtube_id = props.url.split('?v=')[1]
     }
 
+    const updateYoutubeUrl = () => {
+        api.caster.update({ youtube_url }, props.csrf).then(() => {
+            window.location.reload()
+        })
+    }
+
+    const updateSyncTime = useCallback(
+        youtube_time => {
+            // const youtube_time = player.playerInfo.currentTime
+            const d = new Date()
+            const irl_time = d.getTime() / 1000
+            return api.caster.update({ irl_time, youtube_time }, props.csrf)
+        },
+        [props.csrf],
+    )
+
+    const updateSyncIfCaster = useCallback(
+        event => {
+            if (caster === my_caster.url_path) {
+                console.log(event.target)
+                updateSyncTime(event.target.playerInfo.currentTime)
+            }
+        },
+        [caster, my_caster.url_path, updateSyncTime],
+    )
+
     const createPlayer = useCallback(() => {
         if (youtube_id) {
             let new_player = new window.YT.Player('ytplayer', {
                 videoId: youtube_id,
+                events: { onStateChange: updateSyncIfCaster },
             })
             setPlayer(new_player)
         }
-    }, [youtube_id])
+    }, [youtube_id, updateSyncIfCaster])
 
-    const updateYoutubeUrl = () => {
-        api.caster.update({ youtube_url }, props.csrf)
-            .then(() => {
-                window.location.reload()
-            })
-    }
-
-    const updateSyncTime = () => {
-        if (player !== null) {
-            const youtube_time = player.playerInfo.currentTime
-            const d = new Date()
-            const irl_time = d.getTime() / 1000
-            return api.caster.update({ irl_time, youtube_time }, props.csrf)
-        }
-    }
-
-    const moveToSyncTime = (caster_irl_time, caster_youtube_time) => {
-        if (player !== null) {
-            const my_time = new Date().getTime() / 1000
-            const time_delta = my_time - caster_irl_time
-            const synced_time = caster_youtube_time + time_delta + parseFloat(offset)
-            player.seekTo(synced_time, true)
-        }
-    }
+    const moveToSyncTime = useCallback(
+        (caster_irl_time, caster_youtube_time) => {
+            if (player !== null && player.seekTo) {
+                const my_time = new Date().getTime() / 1000
+                const time_delta = my_time - caster_irl_time
+                const synced_time = caster_youtube_time + time_delta + parseFloat(offset)
+                player.seekTo(synced_time, true)
+            }
+        },
+        [player, offset],
+    )
 
     const syncToCaster = () => {
         const last_update = last_timing_update || 1
@@ -82,8 +96,8 @@ function YoutubeIframe(props) {
                 setLastTimingUpdate(now)
             })
         } else {
-            let temp_timing = {...timing_data}
-            temp_timing.caster_youtube_time += .001
+            let temp_timing = { ...timing_data }
+            temp_timing.caster_youtube_time += 0.001
             setTimingData(temp_timing)
         }
     }
@@ -93,7 +107,7 @@ function YoutubeIframe(props) {
         const caster_irl_time = timing_data.irl_time
         const caster_youtube_time = timing_data.youtube_time
         moveToSyncTime(caster_irl_time, caster_youtube_time)
-    }, [timing_data])
+    }, [timing_data, moveToSyncTime])
 
     // set player on load
     useEffect(() => {
@@ -102,7 +116,7 @@ function YoutubeIframe(props) {
 
     return (
         <div style={{ maxWidth: props.width, width: props.width }} className="">
-            <div className="video-container">
+            <div className="video-container" style={{marginBottom: 4}}>
                 <div id="ytplayer"></div>
                 {/* <iframe */}
                 {/*     title="youtube-embed" */}
@@ -132,14 +146,14 @@ function YoutubeIframe(props) {
                             Set youtube URL
                         </button>
                     </div>
-                    <button onClick={updateSyncTime}>Set Sync Time for Viewers</button>
+                    {/* <button onClick={() => updateSyncTime(player.playerInfo.currentTime)}> */}
+                    {/*     Set Sync Time for Viewers */}
+                    {/* </button> */}
                 </div>
             )}
             {my_caster.url_path !== caster && (
                 <div>
-                    <div style={{display: 'inline-block', marginRight: 8}}>
-                        timing offset
-                    </div>
+                    <div style={{ display: 'inline-block', marginRight: 8 }}>delay</div>
                     <input
                         onKeyDown={event => {
                             if (event.key === 'Enter') {
