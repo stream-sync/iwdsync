@@ -28,7 +28,7 @@ function YoutubeIframe(props) {
     const [player, setPlayer] = useState(null)
     const [youtube_url, setYoutubeUrl] = useState('')
     const [timing_data, setTimingData] = useState({})
-    const [offset, setOffset] = useLocalStorage('timing_offset', -10)
+    const [offset, setOffset] = useLocalStorage('timing_offset', -9)
     const [last_timing_update, setLastTimingUpdate] = useLocalStorage('last_timing_update', null)
     const caster = props.caster
     const my_caster = props.my_caster
