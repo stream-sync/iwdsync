@@ -5,6 +5,7 @@ import { TwitchEmbed } from './twitchembed'
 import { TwitchChatEmbed } from './twitchchatembed'
 import { YoutubeEmbed } from './youtubeembed'
 import { getHeight } from '../../helper/video'
+import { Instructions } from './instructions'
 // import queryString from 'query-string'
 import api from '../../api/api'
 
@@ -69,12 +70,12 @@ export function Caster(props) {
         twitch_width_actual = window_width - chat_width_total - 25
     }
 
-    let mini_twitch_width = parseInt(0.19 * youtube_width_actual)
-    let mini_twitch_bottom_pos = parseInt(getHeight({ width: youtube_width_actual }) * 0.225)
+    let mini_twitch_width = parseInt(0.17 * youtube_width_actual)
+    let mini_twitch_bottom_pos = parseInt(getHeight({ width: youtube_width_actual }) * 0.41)
     if (mini_position === 'center') {
         mini_twitch_bottom_pos =
-            getHeight({ width: youtube_width_actual }) / 2 -
-            getHeight({ width: mini_twitch_width }) / 2
+            getHeight({ width: youtube_width_actual }) / 2
+            // getHeight({ width: mini_twitch_width }) / 2
     }
 
     const getButtonStyle = is_selected => {
@@ -123,17 +124,17 @@ export function Caster(props) {
     let mini_position_style
     if (mini_position === 'right') {
         mini_position_style = {
-            bottom: mini_twitch_bottom_pos,
+            top: getHeight({width: youtube_width_actual}) - mini_twitch_bottom_pos,
             right: 0,
         }
     } else if (mini_position === 'left') {
         mini_position_style = {
-            bottom: mini_twitch_bottom_pos,
+            top: getHeight({width: youtube_width_actual}) - mini_twitch_bottom_pos,
             left: 0,
         }
     } else if (mini_position === 'center') {
         mini_position_style = {
-            bottom: mini_twitch_bottom_pos,
+            top: getHeight({width: youtube_width_actual}) - mini_twitch_bottom_pos,
             left: youtube_width_actual / 2 - mini_twitch_width / 2,
         }
     }
@@ -280,7 +281,7 @@ export function Caster(props) {
                     <div style={{ height: 20 }}></div>
                     <div style={{ display: 'flex', margin: 'auto', flexWrap: 'wrap' }}>
                         {show_chat !== '' && (
-                            <div style={{ margin: 'auto' }}>
+                            <div style={{ marginRight: 'auto' }}>
                                 <TwitchChatEmbed
                                     width={chat_width}
                                     config={caster_data}
@@ -296,35 +297,41 @@ export function Caster(props) {
                                 </div>
                             )}
 
-                            <div style={{ position: 'relative' }}>
-                                <YoutubeEmbed
-                                    caster={caster}
-                                    width={youtube_width_actual}
-                                    youtube_live_url={caster_data.youtube_url}
-                                    my_caster={my_caster}
-                                    csrf={csrf}
-                                />
+                            <div>
+                                <div style={{ position: 'relative' }}>
+                                    <YoutubeEmbed
+                                        caster={caster}
+                                        width={youtube_width_actual}
+                                        youtube_live_url={caster_data.youtube_url}
+                                        my_caster={my_caster}
+                                        csrf={csrf}
+                                    />
 
-                                {show_twitch_in_youtube && (
-                                    <div
-                                        style={{
-                                            ...mini_position_style,
-                                            position: 'absolute',
-                                            zIndex: 10,
-                                            borderRadius: '5%',
-                                        }}
-                                    >
-                                        <TwitchEmbed
-                                            width={mini_twitch_width}
-                                            config={caster_data}
-                                        />
-                                    </div>
-                                )}
+                                    {show_twitch_in_youtube && (
+                                        <div
+                                            style={{
+                                                ...mini_position_style,
+                                                position: 'absolute',
+                                                zIndex: 10,
+                                                borderRadius: '5%',
+                                            }}
+                                        >
+                                            <TwitchEmbed
+                                                width={mini_twitch_width}
+                                                config={caster_data}
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                            <br />
+                            <div style={{display: 'inline-block', width: youtube_width_actual}}>
+                                <Instructions />
                             </div>
                         </div>
 
                         {caster_chat && (
-                            <div style={{ margin: 'auto' }}>
+                            <div style={{ marginLeft: 'auto' }}>
                                 <TwitchChatEmbed width={chat_width} config={caster_data} />
                             </div>
                         )}
