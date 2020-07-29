@@ -10,17 +10,13 @@ Originally made for IWD to make it easier to link to all necessary sources quick
 1. go to [vercel app](https://iwdsync.vercel.app/caster/iwd/)
 1. Set the youtube url by filling the input and clicking the button
 1. play the video at any point
-    * click **sync for viewers**
-1. Now, viewers will be able to click *sync to caster*
-to try to sync their video.  They may have to mess with the offset timing.
+    * the video will automatically send timing data to server
+    * **No need to click button anymore**
+1. Now, viewers will be able to click *sync to caster* to try to sync their video.  They may have to mess with the offset timing.
+    * I set it to 10 sec by default based on timing in your vods.
 
 
 # ideas
 
-- easier way to set youtube url
 - youtube muted by default
 - twitch sound on by default
-- sync youtube with IWD using carbo's method
-    - switch to using the controlled player api's
-    - save timestamps to hardstuck OR use some online key/value store
-    - save youtube video to hardstuck?
