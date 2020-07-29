@@ -326,7 +326,9 @@ export function Caster(props) {
                             </div>
                             <br />
                             <div style={{display: 'inline-block', width: youtube_width_actual}}>
-                                <Instructions />
+                                <div style={{padding: 15}}>
+                                    <Instructions />
+                                </div>
                             </div>
                         </div>
 

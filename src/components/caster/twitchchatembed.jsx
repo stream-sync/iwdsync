@@ -7,7 +7,7 @@ export function TwitchChatEmbed(props) {
     const channel = props.channel || config.twitch_channel
     return (
         <div>
-            <h4 style={{ textAlign: 'center', marginBottom: 5 }}>{channel} chat</h4>
+            {/* <h4 style={{ textAlign: 'center', marginBottom: 5 }}>{channel} chat</h4> */}
             {config && config.twitch_channel && (
                 <iframe
                     title="twitch-chat-embed"
