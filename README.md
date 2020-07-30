@@ -16,7 +16,17 @@ Originally made for IWD to make it easier to link to all necessary sources quick
     * I set it to 10 sec by default based on timing in your vods.
 
 
+# Load Testing
+
+* Requires 8 2x dynos on heroku to handle 1000 requests/second with 19ms response time
+![loader.io load testing image](https://i.imgur.com/bcwWTif.png)
+
+
 # ideas
 
 - youtube muted by default
 - twitch sound on by default
+- autoplay youtube
+- ensure video is synced with caster every \<x\> seconds
+- reload player with new video if caster inputs a new video
+

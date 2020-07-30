@@ -70,8 +70,8 @@ export function Caster(props) {
         twitch_width_actual = window_width - chat_width_total - 25
     }
 
-    let mini_twitch_width = parseInt(0.17 * youtube_width_actual)
-    let mini_twitch_bottom_pos = parseInt(getHeight({ width: youtube_width_actual }) * 0.41)
+    let mini_twitch_width = parseInt(0.18 * youtube_width_actual)
+    let mini_twitch_bottom_pos = parseInt(getHeight({ width: youtube_width_actual }) * 0.415)
     if (mini_position === 'center') {
         mini_twitch_bottom_pos = getHeight({ width: youtube_width_actual }) / 2
         // getHeight({ width: mini_twitch_width }) / 2
