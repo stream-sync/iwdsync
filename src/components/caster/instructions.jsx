@@ -32,6 +32,15 @@ export function Instructions(props) {
                     arrow keys to nudge the time by 0.1 seconds.
                 </li>
             </ul>
+
+            <h3>Sync isn't working?</h3>
+            <ul>
+                <li>
+                    If your video is not syncing and you are watching a live youtube stream,
+                    you may need to first play the youtube stream at 2x speed to ensure
+                    you are ahead of the caster.
+                </li>
+            </ul>
         </div>
     )
 }
