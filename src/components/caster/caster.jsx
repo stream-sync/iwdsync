@@ -12,6 +12,7 @@ import api from '../../api/api'
 export function Caster(props) {
     // const [ext_config, setExtConfig] = useState({})
     const [csrf, setCsrf] = useState('')
+    const [custom_chat, setCustomChat] = useLocalStorage('custom_chat', '')
     const [caster_data, setCasterData] = useState({})
     const [my_caster, setMyCaster] = useState({})
     const [show_chat, setShowChat] = useLocalStorage('show_chat', '')
@@ -186,7 +187,7 @@ export function Caster(props) {
 
                             <div style={{ textAlign: 'center' }}>
                                 <div style={{ ...button_group_style }}>
-                                    <h4>Riot Chat</h4>
+                                    <h4>Alt Chat</h4>
                                     <div style={{ display: 'inline-block' }}>
                                         <button
                                             style={getButtonStyle(show_chat === '')}
@@ -206,6 +207,14 @@ export function Caster(props) {
                                         >
                                             LEC
                                         </button>
+                                        <br />
+                                        <button
+                                            style={getButtonStyle(show_chat === custom_chat)}
+                                            onClick={() => setShowChat(custom_chat)}
+                                        >
+                                            Custom
+                                        </button>
+                                        <input type="text" value={custom_chat} onChange={event => setCustomChat(event.target.value)} />
                                     </div>
                                 </div>
 
