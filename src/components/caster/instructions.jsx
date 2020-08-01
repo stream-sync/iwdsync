@@ -40,6 +40,17 @@ export function Instructions(props) {
                     you may need to first play the youtube stream at 2x speed to ensure
                     you are ahead of the caster.
                 </li>
+                <li>
+                    If it still isn't working, click the lock in the address bar and try
+                    deleting the site cookies and retrying.
+                </li>
+            </ul>
+
+            <h3>Idk Brian, your shit website still is not working.</h3>
+            <ul>
+                <li>
+                    sorry - just sync it manually for now
+                </li>
             </ul>
         </div>
     )
