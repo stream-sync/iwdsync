@@ -109,17 +109,19 @@ export function Caster(props) {
         return button_style
     }
 
-    const setDefaultsForSmallScreen = useCallback((window_width) => {
-        if (window_width < 900) {
-            if (youtube_width !== 'fill') {
-                setYoutubeWidth('fill')
+    const setDefaultsForSmallScreen = useCallback(
+        window_width => {
+            if (window_width < 900) {
+                if (youtube_width !== 'fill') {
+                    setYoutubeWidth('fill')
+                }
+                if (!hide_settings) {
+                    setHideSettings(true)
+                }
             }
-            if (!hide_settings) {
-                setHideSettings(true)
-            }
-        }
-    }, [youtube_width])
-
+        },
+        [youtube_width],
+    )
 
     useEffect(() => {
         setDefaultsForSmallScreen(window.innerWidth)
@@ -331,7 +333,11 @@ export function Caster(props) {
                         <div style={{ margin: 'auto' }}>
                             {!show_twitch_in_youtube && (
                                 <div>
-                                    <TwitchEmbed width={twitch_width_actual} config={caster_data} />
+                                    <TwitchEmbed
+                                        default_resolution="1080p"
+                                        width={twitch_width_actual}
+                                        config={caster_data}
+                                    />
                                 </div>
                             )}
 
@@ -355,6 +361,7 @@ export function Caster(props) {
                                             }}
                                         >
                                             <TwitchEmbed
+                                                default_resolution="360p"
                                                 width={mini_twitch_width}
                                                 config={caster_data}
                                             />
@@ -364,7 +371,8 @@ export function Caster(props) {
                                 <div>
                                     <button
                                         onClick={() => setHideSettings(!hide_settings)}
-                                        style={getButtonStyle(hide_settings)}>
+                                        style={getButtonStyle(hide_settings)}
+                                    >
                                         hide settings
                                     </button>
                                 </div>

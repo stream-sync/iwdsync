@@ -1,13 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { getHeight } from '../../helper/video'
+import { parents } from '../../configs/gen'
 
 export function getTwitchEmbedUrl(channel, chat = false) {
-    let parents = [
-        'iwdsync.vercel.app',
-        'iwdsync-git-master.antigravity.vercel.app',
-        'iwdsync.antigravity.vercel.app',
-        'localhost',
-    ]
     // if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     //     // dev code
     //     parents = ['localhost']
@@ -21,23 +16,41 @@ export function getTwitchEmbedUrl(channel, chat = false) {
 }
 
 export function TwitchEmbed(props) {
+    const [player, setPlayer] = useState(null)
     const config = props.config
     const width = props.width || 640
+    const default_resolution = props.default_resolution || "360p"
+
+    const createPlayer = useCallback(() => {
+        if (config.twitch_channel) {
+            let options = {
+                channel: config.twitch_channel,
+                parent: parents,
+            }
+            let player = new window.Twitch.Player('twitch-player-div', options)
+
+            setPlayer(player)
+        }
+        return player
+    }, [config.twitch_channel])
+
+    useEffect(() => {
+        createPlayer()
+    }, [createPlayer])
+
+    useEffect(() => {
+        setTimeout(() => {
+            if (player) {
+                player.setQuality(default_resolution)
+            }
+        }, 5000)
+    }, [player])
 
     return (
         <div>
             {config && config.twitch_channel && (
                 <div style={{ maxWidth: width, width }} className="video-wrap">
-                    <div className="video-container">
-                        <iframe
-                            title="twitch-embed"
-                            src={getTwitchEmbedUrl(config.twitch_channel)}
-                            height={getHeight({ width })}
-                            width={width}
-                            frameBorder=""
-                            scrolling=""
-                            allowFullScreen={true}
-                        ></iframe>
+                    <div id="twitch-player-div" className="video-container">
                     </div>
                 </div>
             )}
