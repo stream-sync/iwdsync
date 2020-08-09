@@ -3,6 +3,7 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
+    Redirect,
     // Link
 } from 'react-router-dom'
 import { Caster } from './components/caster/caster'
@@ -16,7 +17,7 @@ function App() {
                 <div>
                     <Switch>
 
-                        {/* <Route path="/" exact component={Home} /> */}
+                        <Route path="/" exact component={TempReroute} />
                         <Route path="/caster/:caster" component={Caster} />
                         {/* <Route path="/config" component={Caster} /> */}
                     </Switch>
@@ -30,6 +31,12 @@ function App() {
                 </div>
             </Router>
         </div>
+    )
+}
+
+function TempReroute() {
+    return (
+        <Redirect to='/caster/iwd' />
     )
 }
 
