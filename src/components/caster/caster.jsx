@@ -275,6 +275,7 @@ export function Caster(props) {
                                             Mini Player
                                         </button>
                                         <button
+                                            title='Thanks Zemy'
                                             style={getButtonStyle(twitch_style === 'above_chat')}
                                             onClick={() => setTwitchStyle('above_chat')}
                                         >
