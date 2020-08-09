@@ -9,6 +9,7 @@ export const caster_data = {
 }
 
 export const parents = [
+    'iwdlive.com',
     'iwdsync.app',
     'iwdsync.vercel.app',
     // 'iwdsync-git-master.antigravity.vercel.app',
