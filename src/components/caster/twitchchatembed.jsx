@@ -7,7 +7,7 @@ export function TwitchChatEmbed(props) {
     const height = props.height || 700
     const channel = props.channel || config.twitch_channel
     return (
-        <div style={{height, minHeight: 500}}>
+        <div style={{height, minHeight: 400}}>
             {/* <h4 style={{ textAlign: 'center', marginBottom: 5 }}>{channel} chat</h4> */}
             {config && config.twitch_channel && (
                 <iframe

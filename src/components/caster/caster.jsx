@@ -20,10 +20,7 @@ export function Caster(props) {
     const [caster_chat, setCasterChat] = useLocalStorage('caster_chat', true)
     const [youtube_width, setYoutubeWidth] = useLocalStorage('youtube_width', 'fill with chat')
     const [twitch_width, setTwitchWidth] = useLocalStorage('twitch_width', 640)
-    const [show_twitch_in_youtube, setShowTwitchInYoutube] = useLocalStorage(
-        'show_twitch_in_youtube',
-        true,
-    )
+    const [twitch_style, setTwitchStyle] = useLocalStorage('twitch_style', 'above_chat')
     const [mini_position, setMiniPosition] = useLocalStorage('mini_position', 'right')
     const [window_width, setWindowWidth] = useState(window.innerWidth)
     const [window_height, setWindowHeight] = useState(window.innerHeight)
@@ -170,7 +167,10 @@ export function Caster(props) {
         }
     }
 
-    const twitch_chat_height = youtube_height
+    let twitch_chat_height = youtube_height
+    if (twitch_style === 'above_chat') {
+        twitch_chat_height -= getHeight({width: chat_width})
+    }
 
     return (
         <div>
@@ -262,21 +262,27 @@ export function Caster(props) {
 
                                     <div>
                                         <button
-                                            style={getButtonStyle(show_twitch_in_youtube === false)}
-                                            onClick={() => setShowTwitchInYoutube(false)}
+                                            style={getButtonStyle(twitch_style === 'separate')}
+                                            onClick={() => setTwitchStyle('separate')}
                                         >
                                             Separate
                                         </button>
                                         <button
-                                            style={getButtonStyle(show_twitch_in_youtube === true)}
-                                            onClick={() => setShowTwitchInYoutube(true)}
+                                            style={getButtonStyle(twitch_style === 'mini')}
+                                            onClick={() => setTwitchStyle('mini')}
                                         >
                                             Mini Player
+                                        </button>
+                                        <button
+                                            style={getButtonStyle(twitch_style === 'above_chat')}
+                                            onClick={() => setTwitchStyle('above_chat')}
+                                        >
+                                            Above Chat
                                         </button>
                                     </div>
 
                                     <div>
-                                        {show_twitch_in_youtube === true && (
+                                        {twitch_style === 'mini' && (
                                             <>
                                                 <h5>Mini Player Position</h5>
                                                 <div style={{ display: 'inline-block' }}>
@@ -296,7 +302,7 @@ export function Caster(props) {
                                                 </div>
                                             </>
                                         )}
-                                        {show_twitch_in_youtube === false && (
+                                        {twitch_style === 'separate' && (
                                             <>
                                                 <h5>Video Size</h5>
                                                 <div style={{ display: 'inline-block' }}>
@@ -341,7 +347,7 @@ export function Caster(props) {
                         )}
 
                         <div style={{ margin: 'auto' }}>
-                            {!show_twitch_in_youtube && (
+                            {twitch_style === 'separate' && (
                                 <div>
                                     <TwitchEmbed
                                         default_resolution="1080p"
@@ -361,7 +367,7 @@ export function Caster(props) {
                                         csrf={csrf}
                                     />
 
-                                    {show_twitch_in_youtube && (
+                                    {twitch_style === 'mini' && (
                                         <div
                                             style={{
                                                 ...mini_position_style,
@@ -397,6 +403,13 @@ export function Caster(props) {
 
                         {caster_chat && (
                             <div style={{ marginLeft: 'auto' }}>
+                                {twitch_style === 'above_chat' &&
+                                    <TwitchEmbed
+                                        default_resolution="480p"
+                                        width={chat_width}
+                                        config={caster_data}
+                                    />
+                                }
                                 <TwitchChatEmbed
                                     height={twitch_chat_height}
                                     width={chat_width}
