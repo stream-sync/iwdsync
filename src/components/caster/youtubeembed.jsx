@@ -66,7 +66,13 @@ function YoutubeIframe(props) {
         if (youtube_id) {
             let new_player = new window.YT.Player('ytplayer', {
                 videoId: youtube_id,
-                events: { onStateChange: updateSyncIfCaster },
+                events: {
+                    onStateChange: updateSyncIfCaster,
+                    onReady: event => {
+                        event.target.mute()
+                        event.target.playVideo()
+                    },
+                },
             })
             setPlayer(new_player)
         }
@@ -115,7 +121,7 @@ function YoutubeIframe(props) {
 
     return (
         <div style={{ maxWidth: props.width, width: props.width }} className="">
-            <div className="video-container" style={{marginBottom: 4}}>
+            <div className="video-container" style={{ marginBottom: 4 }}>
                 <div id="ytplayer"></div>
                 {/* <iframe */}
                 {/*     title="youtube-embed" */}
@@ -127,47 +133,49 @@ function YoutubeIframe(props) {
                 {/* ></iframe> */}
             </div>
 
-            {my_caster.url_path === caster && (
-                <div>
-                    <div>
+            <div>
+                {my_caster.url_path === caster && (
+                    <>
+                        <div>
+                            <input
+                                onKeyDown={event => {
+                                    if (event.key === 'Enter') {
+                                        updateYoutubeUrl()
+                                    }
+                                }}
+                                style={{ display: 'inline-block' }}
+                                type="text"
+                                value={youtube_url}
+                                onChange={event => setYoutubeUrl(event.target.value)}
+                            />
+                            <button onClick={updateYoutubeUrl} style={{ display: 'inline-block' }}>
+                                Set youtube URL
+                            </button>
+                        </div>
+                        {/* <button onClick={() => updateSyncTime(player.playerInfo.currentTime)}> */}
+                        {/*     Set Sync Time for Viewers */}
+                        {/* </button> */}
+                    </>
+                )}
+                {my_caster.url_path !== caster && (
+                    <>
+                        <div style={{ display: 'inline-block', marginRight: 8 }}>offset</div>
                         <input
                             onKeyDown={event => {
                                 if (event.key === 'Enter') {
-                                    updateYoutubeUrl()
+                                    syncToCaster()
                                 }
                             }}
-                            style={{ display: 'inline-block' }}
-                            type="text"
-                            value={youtube_url}
-                            onChange={event => setYoutubeUrl(event.target.value)}
+                            style={{ width: 100 }}
+                            type="number"
+                            step="0.1"
+                            value={offset}
+                            onChange={event => setOffset(event.target.value)}
                         />
-                        <button onClick={updateYoutubeUrl} style={{ display: 'inline-block' }}>
-                            Set youtube URL
-                        </button>
-                    </div>
-                    {/* <button onClick={() => updateSyncTime(player.playerInfo.currentTime)}> */}
-                    {/*     Set Sync Time for Viewers */}
-                    {/* </button> */}
-                </div>
-            )}
-            {my_caster.url_path !== caster && (
-                <div>
-                    <div style={{ display: 'inline-block', marginRight: 8 }}>offset</div>
-                    <input
-                        onKeyDown={event => {
-                            if (event.key === 'Enter') {
-                                syncToCaster()
-                            }
-                        }}
-                        style={{ width: 100 }}
-                        type="number"
-                        step="0.1"
-                        value={offset}
-                        onChange={event => setOffset(event.target.value)}
-                    />
-                    <button onClick={syncToCaster}>sync to caster</button>
-                </div>
-            )}
+                        <button onClick={syncToCaster}>sync to caster</button>
+                    </>
+                )}
+            </div>
         </div>
     )
 }
