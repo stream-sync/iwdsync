@@ -167,6 +167,7 @@ export function Caster(props) {
         }
     }
 
+    let twitch_chat_height_default = youtube_height
     let twitch_chat_height = youtube_height
     if (twitch_style === 'above_chat') {
         twitch_chat_height -= getHeight({width: chat_width})
@@ -338,7 +339,7 @@ export function Caster(props) {
                         {show_chat !== '' && (
                             <div style={{ marginRight: 'auto' }}>
                                 <TwitchChatEmbed
-                                    height={twitch_chat_height}
+                                    height={twitch_chat_height_default}
                                     width={chat_width}
                                     config={caster_data}
                                     channel={show_chat}
