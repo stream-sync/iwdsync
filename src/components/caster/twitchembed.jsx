@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import { getHeight } from '../../helper/video'
 import { parents } from '../../configs/gen'
 
 export function getTwitchEmbedUrl(channel, chat = false) {
@@ -32,7 +31,7 @@ export function TwitchEmbed(props) {
             setPlayer(player)
         }
         return player
-    }, [config.twitch_channel])
+    }, [config.twitch_channel, player])
 
     useEffect(() => {
         createPlayer()
@@ -44,7 +43,7 @@ export function TwitchEmbed(props) {
                 player.setQuality(default_resolution)
             }
         }, 5000)
-    }, [player])
+    }, [player, default_resolution])
 
     return (
         <div>

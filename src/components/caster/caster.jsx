@@ -121,12 +121,12 @@ export function Caster(props) {
                 }
             }
         },
-        [youtube_width],
+        [youtube_width, hide_settings, setHideSettings, setYoutubeWidth],
     )
 
     useEffect(() => {
         setDefaultsForSmallScreen(window.innerWidth)
-    }, [])
+    }, [setDefaultsForSmallScreen])
 
     // re-set window-width on window resize
     useEffect(() => {
@@ -142,7 +142,7 @@ export function Caster(props) {
         return () => {
             window.removeEventListener('resize', resize_event_handler)
         }
-    }, [window_width, setDefaultsForSmallScreen])
+    }, [window_width, window_height, setDefaultsForSmallScreen])
 
     const selectable_widths = [560, 640, 720, 1280, 1600, 'fill', 'fill with chat']
     const button_group_style = {
