@@ -29,8 +29,47 @@ button:focus {
   max-width: 100%;
 }
 
-/* And set the max-width of the parent element */
-.video-wrap {
+.grid-container {
+  display: grid;
+  grid-template-rows: 50px auto 24px;
+  grid-template-areas:
+    "HeaderMenu"
+    "Content"
+    "Footer";
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+}
+
+.header-menu { grid-area: HeaderMenu; border: 1px solid rgb(188 18 64); }
+
+.content {
+  grid-area: Content;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgb(35 35 35);
+}
+
+.content .chat {
+  flex: 1 1 25vw;
+  height: 100%;
+  position: relative;
+  max-width: 0vw;
+  transition: max-width 0.3s ease-out;
+}
+
+.content .chat[open] {
+  max-width: 25vw;
+}
+
+.content .video {
+  flex: 1 1 50vw;
+  height: 100%;
   width: 100%;
-  max-width: 600px;
+}
+
+.footer {
+  grid-area: Footer;
+  padding: 0 1rem;
+  color: rgb(255, 255, 255);
 }
