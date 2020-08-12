@@ -36,7 +36,6 @@ button:focus {
     "HeaderMenu"
     "Content"
     "Footer";
-  height: 100vh;
 }
 
 .header-menu { grid-area: HeaderMenu; border: 1px solid rgb(188 18 64); }
@@ -46,6 +45,7 @@ button:focus {
   display: flex;
   align-items: center;
   border: 1px solid rgb(35 35 35);
+  height: 100vh;
 }
 
 .content .chat {
