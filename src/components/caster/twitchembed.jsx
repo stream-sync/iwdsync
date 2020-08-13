@@ -6,11 +6,11 @@ export function getTwitchEmbedUrl(channel, chat = false) {
     //     // dev code
     //     parents = ['localhost']
     // }
-    const parent_string = parents.map(parent => `&parent=${parent}`).join('')
+    const parentString = parents.map((parent) => `&parent=${parent}`).join('')
     if (chat) {
-        return `https://www.twitch.tv/embed/${channel}/chat?darkpopout${parent_string}`
+        return `https://www.twitch.tv/embed/${channel}/chat?darkpopout${parentString}`
     } else {
-        return `https://player.twitch.tv/?channel=${channel}${parent_string}`
+        return `https://player.twitch.tv/?channel=${channel}${parentString}`
     }
 }
 
@@ -18,7 +18,7 @@ export function TwitchEmbed(props) {
     const [player, setPlayer] = useState(null)
     const config = props.config
     const width = props.width || 640
-    const default_resolution = props.default_resolution || "360p"
+    const defaultResolution = props.default_resolution || '360p'
 
     const createPlayer = useCallback(() => {
         if (config.twitch_channel) {
@@ -40,17 +40,16 @@ export function TwitchEmbed(props) {
     useEffect(() => {
         setTimeout(() => {
             if (player) {
-                player.setQuality(default_resolution)
+                player.setQuality(defaultResolution)
             }
         }, 5000)
-    }, [player, default_resolution])
+    }, [player, defaultResolution])
 
     return (
         <div>
             {config && config.twitch_channel && (
                 <div style={{ maxWidth: width, width }} className="video-wrap">
-                    <div id="twitch-player-div" className="video-container">
-                    </div>
+                    <div id="twitch-player-div" className="video-container"></div>
                 </div>
             )}
         </div>
