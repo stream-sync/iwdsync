@@ -4,6 +4,7 @@ import api from '../../api/api'
 // import { getHeight, getWidth } from '../../helper/video'
 
 // import { TwitchEmbed } from './twitchembed'
+import Controls from './Controls'
 import { TwitchChatEmbed } from './twitchchatembed'
 import { YoutubeEmbed } from './youtubeembed'
 // import { Instructions } from './instructions'
@@ -37,7 +38,7 @@ export function Caster(props) {
 
     return (
         <div className="grid-container">
-            <div className="header-menu"></div>
+            <Controls />
             <div className="content">
                 <div className="chat" open={true}>
                     <TwitchChatEmbed channel="lcs" />

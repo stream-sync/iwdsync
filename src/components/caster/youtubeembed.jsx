@@ -52,7 +52,7 @@ export function YoutubeEmbed(props) {
                     onStateChange: updateSyncIfCaster,
                     onReady: (event) => {
                         event.target.mute()
-                        event.target.playVideo()
+                        // event.target.playVideo()
                     },
                 },
             })
