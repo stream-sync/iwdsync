@@ -23,7 +23,12 @@ const Controls = () => {
 
     const toggleChat = ({ currentTarget }) => {
         const { channelTag, active } = currentTarget.dataset
-        dispatchUI({ type: TOGGLE_CHAT, channelTag, casterChannelTag, active: active === 'true' })
+        dispatchUI({
+            type: TOGGLE_CHAT,
+            channelTag,
+            casterChannelTag,
+            active: active === 'true',
+        })
     }
 
     return (

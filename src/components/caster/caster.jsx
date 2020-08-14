@@ -11,7 +11,10 @@ import { YoutubeEmbed } from './youtubeembed'
 // import { Instructions } from './instructions'
 import Footer from '../general/Footer'
 
-createStore('ui', initialState, reducer)
+const savedState = JSON.parse(window.localStorage.getItem('ui')) || initialState
+createStore('ui', savedState, reducer).subscribe((state) => {
+    window.localStorage.setItem('ui', JSON.stringify(state))
+})
 
 export function Caster(props) {
     const [csrf, setCsrf] = useState('')

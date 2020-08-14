@@ -6,8 +6,6 @@ export const symbols = {
 
 export const actions = {
     [TOGGLE_CHAT]: (state, { channelTag, casterChannelTag, active }) => {
-        console.log(state)
-        console.log(channelTag, casterChannelTag, active)
         if (channelTag === casterChannelTag) {
             return {
                 ...state,
