@@ -8804,6 +8804,11 @@ react-from-dom@^0.4.2:
   resolved "https://registry.yarnpkg.com/react-from-dom/-/react-from-dom-0.4.2.tgz#bef41428172ca570b492b5e12ae7b592587437e0"
   integrity sha512-cVa4/w0xAyd/bbTu+xu2KKrGc+KDKvR8sSQKodd5pPrN03bN1V3JOLPW+PIzh698LzQ4aL1dfWXpsKx3ZkpT+A==
 
+react-hookstore@^1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/react-hookstore/-/react-hookstore-1.4.4.tgz#576c78a5e70ff65ea80f5fcab1db1a9d9494007c"
+  integrity sha512-/shqvOsn/hoM/yN/je2phtCrK/Uzp6Dl/akXcF0NUEj1W5YCE/9GyIT+7n1EafTmq0EwYIZOqHZwoFlS6agxGQ==
+
 react-inlinesvg@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/react-inlinesvg/-/react-inlinesvg-2.0.1.tgz#9f2445d597e6adb6aaa8f1b80917696f4fbf4961"

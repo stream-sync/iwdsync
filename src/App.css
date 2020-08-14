@@ -56,7 +56,8 @@ button:focus {
   cursor: pointer;
 }
 
-.controls .chat-toggle:hover text tspan {
+.controls .chat-toggle:hover text tspan,
+.controls .chat-toggle[data-active="true"] text tspan {
   fill: rgb(188 18 64);
 }
 
