@@ -113,9 +113,11 @@ export function Caster(props) {
             if (window_width < 900) {
                 if (youtube_width !== 'fill') {
                     setYoutubeWidth('fill')
+                    setTwitchStyle('mini')
                 }
                 if (!hide_settings) {
                     setHideSettings(true)
+                    setTwitchStyle('mini')
                 }
             }
         },
