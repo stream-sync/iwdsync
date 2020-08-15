@@ -20,8 +20,8 @@ export function TwitchEmbed(props) {
     const width = props.width || 640
     const defaultResolution = props.default_resolution || '360p'
 
-    const createPlayer = useCallback(() => {
-        if (config.twitch_channel) {
+    useEffect(() => {
+        if (!player || config.twitch_channel !== player._options.channel) {
             let options = {
                 channel: config.twitch_channel,
                 parent: parents,
@@ -29,13 +29,9 @@ export function TwitchEmbed(props) {
             let player = new window.Twitch.Player('twitch-player-div', options)
 
             setPlayer(player)
+            console.log(player)
         }
-        return player
-    }, [config.twitch_channel, player])
-
-    useEffect(() => {
-        createPlayer()
-    }, [createPlayer])
+    }, [config.twitch_channel, setPlayer, player])
 
     useEffect(() => {
         setTimeout(() => {
