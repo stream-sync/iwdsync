@@ -136,6 +136,25 @@ button:focus {
   width: 100%;
 }
 
+.twitch-video {
+  position: absolute;
+}
+.twitch-video .moveable-control-box{
+  height: 70%;
+  width: 100%;
+}
+
+.twitch-video .moveable-area {
+  height: 100% !important;
+}
+
+.handle {
+  position: absolute;
+  width: 100%;
+  height: 70%;
+  cursor: move;
+}
+
 .footer {
   grid-area: Footer;
   padding: 0 1rem;

@@ -4,10 +4,10 @@ import { createStore, useStore } from 'react-hookstore'
 import api from '../../api/api'
 import { initialState, reducer } from '../../reducers/ui'
 
-import { TwitchEmbed } from './twitchembed'
 import Controls from './Controls'
 import { TwitchChatEmbed } from './twitchchatembed'
 import { YoutubeEmbed } from './youtubeembed'
+import { TwitchEmbed } from './twitchembed'
 // import { Instructions } from './instructions'
 import Footer from '../general/Footer'
 
@@ -21,7 +21,6 @@ export function Caster(props) {
     const [casterData, setCasterData] = useState({})
     const [myCaster, setMyCaster] = useState({})
     const [{ chats }] = useStore('ui')
-    const [showTwitch, toggleTwitch] = useState(false)
 
     let caster = props.match.params.caster
 
@@ -63,11 +62,7 @@ export function Caster(props) {
                     <TwitchChatEmbed channel={casterData.twitch_channel} />
                 </div>
             </div>
-            {showTwitch ? (
-                <TwitchEmbed default_resolution="1080p" config={casterData} />
-            ) : (
-                <button onClick={() => toggleTwitch(true)}>Show</button>
-            )}
+            {casterData.twitch_channel && <TwitchEmbed config={casterData} />}
             <Footer />
         </div>
     )
