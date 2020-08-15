@@ -7,9 +7,7 @@ Originally made for IWD to make it easier to link to all necessary sources quick
 
 1. Make sure you're logged in at [heroku](https://iwdsync.herokuapp.com/admin/)
     * the youtube link input won't show up if you are not logged in
-1. go to [vercel app](https://iwdsync.vercel.app/caster/iwd/)
-    - other links [https://iwdsync-git-master.import-antigravity.vercel.app/caster/iwd](https://iwdsync-git-master.import-antigravity.vercel.app/caster/iwd)
-    - [https://iwdsync.import-antigravity.vercel.app/caster/iwd](https://iwdsync.import-antigravity.vercel.app/caster/iwd)
+1. go to [iwdlive.com](https://iwdlive.com)
 1. Set the youtube url by filling the input and clicking the button
 1. play the video at any point
     * the video will automatically send timing data to server

@@ -53,16 +53,16 @@ export function Instructions(props) {
                 </li>
             </ul>
 
-            <h3>How can I contribute?</h3>
-            <ul>
-                <li>
-                    The for the site is now public on{' '}
-                    <a target='_blank' rel="noopener noreferrer" href="https://github.com/stream-sync">github</a>.
-                    If you are comfortable with frontend development with React
-                    feel free to fork the code. Also make issues for bugs and changes
-                    you'd like to see.
-                </li>
-            </ul>
+            {/* <h3>How can I contribute?</h3> */}
+            {/* <ul> */}
+            {/*     <li> */}
+            {/*         The for the site is now public on{' '} */}
+            {/*         <a target='_blank' rel="noopener noreferrer" href="https://github.com/stream-sync">github</a>. */}
+            {/*         If you are comfortable with frontend development with React */}
+            {/*         feel free to fork the code. Also make issues for bugs and changes */}
+            {/*         you'd like to see. */}
+            {/*     </li> */}
+            {/* </ul> */}
         </div>
     )
 }
