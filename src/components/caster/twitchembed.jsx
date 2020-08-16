@@ -4,7 +4,10 @@ import Moveable from 'react-moveable'
 import { parents } from '../../configs/gen'
 
 export function getTwitchEmbedUrl(channel, chat = false) {
-    const parentString = parents.map((parent) => `&parent=${parent}`).join('')
+    const parentString = process.env.REACT_APP_TWITCH_PARENTS.split(',')
+        .map((parent) => `&parent=${parent}`)
+        .join('')
+
     if (chat) {
         return `https://www.twitch.tv/embed/${channel}/chat?darkpopout${parentString}`
     } else {
