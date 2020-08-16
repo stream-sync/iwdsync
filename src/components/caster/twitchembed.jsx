@@ -17,10 +17,12 @@ export function getTwitchEmbedUrl(channel, chat = false) {
 
 export function TwitchEmbed(props) {
     const [player, setPlayer] = useState(null)
-    const [moveableTarget, setMoveableTarget] = useState()
     const [moveableFrame, setMoveableFrame] = useState({
-        translate: [0, 0],
+        translate: [10, 10],
     })
+
+    const moveableTarget = useRef()
+    const eventSink = useRef()
 
     const config = props.config
     const defaultResolution = props.default_resolution || '360p'
@@ -47,32 +49,48 @@ export function TwitchEmbed(props) {
         }, 5000)
     }, [player, defaultResolution])
 
-    useEffect(() => {
-        setMoveableTarget(document.querySelector('.twitch-video'))
-    }, [])
-
     return (
         <div className="twitch-video">
+            <div id="twitch-player-div" style={{ height: '100%' }} ref={moveableTarget}></div>
             <Moveable
-                target={moveableTarget}
-                dragArea={true}
-                draggable={true}
+                target={moveableTarget.current}
                 zoom={1}
                 origin={false}
-                throttleDrag={0}
+                renderDirections={[]}
                 padding={{ left: 0, top: 0, right: 0, bottom: 0 }}
-                onDragStart={({ set }) => {
-                    set(moveableFrame.translate)
-                }}
-                onDrag={({ beforeTranslate }) => {
-                    moveableFrame.translate = beforeTranslate
-                }}
                 onRender={({ target }) => {
                     const { translate } = moveableFrame
                     target.style.transform = `translate(${translate[0]}px, ${translate[1]}px)`
                 }}
+                draggable={true}
+                dragArea={true}
+                throttleDrag={0}
+                onDragStart={({ set }) => {
+                    set(moveableFrame.translate)
+                }}
+                onDrag={({ target, beforeTranslate }) => {
+                    moveableFrame.translate = beforeTranslate
+                }}
+                resizable={true}
+                keepRatio={true}
+                edge={true}
+                onResizeStart={({ setOrigin, dragStart }) => {
+                    setOrigin(['%', '%'])
+                    eventSink.current.style.visibility = 'visible'
+                    dragStart && dragStart.set(moveableFrame.translate)
+                }}
+                onResize={({ target, width, height, drag }) => {
+                    const { beforeTranslate } = drag
+
+                    moveableFrame.translate = beforeTranslate
+                    target.style.width = `${width}px`
+                    target.style.height = `${height}px`
+                }}
+                onResizeEnd={() => {
+                    eventSink.current.style.visibility = 'hidden'
+                }}
             />
-            <div id="twitch-player-div" style={{ height: '100%' }}></div>
+            <div className="moveable-event-sink" ref={eventSink}></div>
         </div>
     )
 }
