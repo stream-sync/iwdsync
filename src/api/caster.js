@@ -1,15 +1,16 @@
 import axios from 'axios'
-import domain from './domain'
+
+import { apiBase } from '../configs/gen'
 
 // axios.defaults.xsrfHeaderName = 'x-csrftoken'
 // axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.withCredentials = true
 
-const BASE = `${domain}/api/caster`
+const BASE = `${apiBase}/api/caster`
 
 function get(params) {
     const url = `${BASE}/`
-    return axios.get(url, {params})
+    return axios.get(url, { params })
 }
 
 function getMyCaster() {
@@ -26,7 +27,7 @@ function update(data, csrf) {
         'access-control-allow-credentials': 'true',
     }
     const url = `${BASE}/`
-    return axios.post(url, data, {headers})
+    return axios.post(url, data, { headers })
 }
 
 function getCsrf() {
