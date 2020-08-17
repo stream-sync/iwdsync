@@ -1,7 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react'
 import Moveable from 'react-moveable'
+import { useStore } from 'react-hookstore'
 
-import { parents } from '../../configs/gen'
+import { POSITION_TWITCH_EMBED } from '../../actions/ui'
+import { twitchParents } from '../../configs/gen'
+
+const translateStyle = (translate) => `translate(${translate[0]}px, ${translate[1]}px)`
 
 export function getTwitchEmbedUrl(channel, chat = false) {
     const parentString = process.env.REACT_APP_TWITCH_PARENTS.split(',')
@@ -17,9 +21,7 @@ export function getTwitchEmbedUrl(channel, chat = false) {
 
 export function TwitchEmbed(props) {
     const [player, setPlayer] = useState(null)
-    const [moveableFrame, setMoveableFrame] = useState({
-        translate: [10, 10],
-    })
+    const [ui, uiDispatch] = useStore('ui')
 
     const moveableTarget = useRef()
     const eventSink = useRef()
@@ -31,7 +33,7 @@ export function TwitchEmbed(props) {
         if (!player || config.twitch_channel !== player._options.channel) {
             let options = {
                 channel: config.twitch_channel,
-                parent: parents,
+                parent: twitchParents,
                 width: '100%',
                 height: '100%',
             }
@@ -51,25 +53,38 @@ export function TwitchEmbed(props) {
 
     return (
         <div className="twitch-video">
-            <div id="twitch-player-div" style={{ height: '100%' }} ref={moveableTarget}></div>
+            <div
+                id="twitch-player-div"
+                style={{
+                    height: ui.twitchEmbed.size.height,
+                    width: ui.twitchEmbed.size.width,
+                    transform: `translate(${ui.twitchEmbed.translate[0]}px, ${ui.twitchEmbed.translate[1]}px)`,
+                }}
+                ref={moveableTarget}
+            ></div>
             <Moveable
                 target={moveableTarget.current}
                 zoom={1}
                 origin={false}
                 renderDirections={[]}
                 padding={{ left: 0, top: 0, right: 0, bottom: 0 }}
-                onRender={({ target }) => {
-                    const { translate } = moveableFrame
-                    target.style.transform = `translate(${translate[0]}px, ${translate[1]}px)`
-                }}
                 draggable={true}
                 dragArea={true}
                 throttleDrag={0}
                 onDragStart={({ set }) => {
-                    set(moveableFrame.translate)
+                    set(ui.twitchEmbed.translate)
                 }}
                 onDrag={({ target, beforeTranslate }) => {
-                    moveableFrame.translate = beforeTranslate
+                    target.style.transform = translateStyle(beforeTranslate)
+                }}
+                onDragEnd={({ lastEvent }) => {
+                    if (lastEvent) {
+                        uiDispatch({
+                            type: POSITION_TWITCH_EMBED,
+                            translate: lastEvent.beforeTranslate,
+                            size: ui.twitchEmbed.size,
+                        })
+                    }
                 }}
                 resizable={true}
                 keepRatio={true}
@@ -77,17 +92,25 @@ export function TwitchEmbed(props) {
                 onResizeStart={({ setOrigin, dragStart }) => {
                     setOrigin(['%', '%'])
                     eventSink.current.style.visibility = 'visible'
-                    dragStart && dragStart.set(moveableFrame.translate)
+                    dragStart && dragStart.set(ui.twitchEmbed.translate)
                 }}
                 onResize={({ target, width, height, drag }) => {
                     const { beforeTranslate } = drag
 
-                    moveableFrame.translate = beforeTranslate
                     target.style.width = `${width}px`
                     target.style.height = `${height}px`
+                    target.style.transform = translateStyle(beforeTranslate)
                 }}
-                onResizeEnd={() => {
-                    eventSink.current.style.visibility = 'hidden'
+                onResizeEnd={({ lastEvent }) => {
+                    console.log(lastEvent)
+                    if (lastEvent) {
+                        uiDispatch({
+                            type: POSITION_TWITCH_EMBED,
+                            translate: lastEvent.drag.beforeTranslate,
+                            size: { height: lastEvent.height, width: lastEvent.width },
+                        })
+                        eventSink.current.style.visibility = 'hidden'
+                    }
                 }}
             />
             <div className="moveable-event-sink" ref={eventSink}></div>

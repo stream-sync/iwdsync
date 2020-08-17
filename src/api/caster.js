@@ -1,10 +1,12 @@
 import axios from 'axios'
 
+import { apiBase } from '../configs/gen'
+
 // axios.defaults.xsrfHeaderName = 'x-csrftoken'
 // axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.withCredentials = true
 
-const BASE = `${process.env.REACT_APP_API_BASE}/api/caster`
+const BASE = `${apiBase}/api/caster`
 
 function get(params) {
     const url = `${BASE}/`

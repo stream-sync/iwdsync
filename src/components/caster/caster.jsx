@@ -11,8 +11,9 @@ import { TwitchEmbed } from './twitchembed'
 // import { Instructions } from './instructions'
 import Footer from '../general/Footer'
 
-const savedState = JSON.parse(window.localStorage.getItem('ui')) || initialState
-createStore('ui', savedState, reducer).subscribe((state) => {
+const savedState = JSON.parse(window.localStorage.getItem('ui')) || {}
+const combinedState = { ...initialState, ...savedState }
+createStore('ui', combinedState, reducer).subscribe((state) => {
     window.localStorage.setItem('ui', JSON.stringify(state))
 })
 

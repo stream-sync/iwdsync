@@ -8,4 +8,5 @@ export const caster_data = {
     },
 }
 
-export const parents = process.env.REACT_APP_TWITCH_PARENTS.split(',')
+export const twitchParents = process.env.REACT_APP_TWITCH_PARENTS.split(',')
+export const apiBase = process.env.REACT_APP_API_BASE
