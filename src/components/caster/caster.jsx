@@ -6,6 +6,7 @@ import { TwitchChatEmbed } from './twitchchatembed'
 import { YoutubeEmbed } from './youtubeembed'
 import { getHeight, getWidth } from '../../helper/video'
 import { Instructions } from './instructions'
+import { setFavicon } from '../utils'
 // import queryString from 'query-string'
 //
 import api from '../../api/api'
@@ -35,6 +36,11 @@ export function Caster(props) {
             setCsrf(response.data.data)
         })
     }, [])
+
+    // set favicon on load
+    useEffect(() => {
+        setFavicon(caster)
+    }, [caster])
 
     useEffect(() => {
         const data = { url_path: caster }
