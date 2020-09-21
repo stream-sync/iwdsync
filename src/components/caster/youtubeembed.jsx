@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useLocalStorage } from '../../helper/hooks'
 import api from '../../api/api'
+import { useStore } from 'react-hookstore'
 
 export function YoutubeEmbed(props) {
     let youtube_live_url = props.youtube_live_url
@@ -26,6 +27,7 @@ export function YoutubeEmbed(props) {
 
 function YoutubeIframe(props) {
     const [player, setPlayer] = useState(null)
+    const [twitchPlayer] = useStore('twitchPlayer')
     const [youtube_url, setYoutubeUrl] = useState('')
     const [timing_data, setTimingData] = useState({})
     const [offset, setOffset] = useLocalStorage('timing_offset', -9)
@@ -81,13 +83,18 @@ function YoutubeIframe(props) {
     const moveToSyncTime = useCallback(
         (caster_irl_time, caster_youtube_time) => {
             if (player !== null && player.seekTo) {
+                const player_state = twitchPlayer.getPlayerState()
+                const latency = player_state.stats.videoStats.hlsLatencyBroadcaster
+                console.log(player_state)
+                console.log(latency)
                 const my_time = new Date().getTime() / 1000
                 const time_delta = my_time - caster_irl_time
-                const synced_time = caster_youtube_time + time_delta + parseFloat(offset)
+                // const synced_time = caster_youtube_time + time_delta + parseFloat(offset)
+                const synced_time = caster_youtube_time + time_delta + latency
                 player.seekTo(synced_time, true)
             }
         },
-        [player, offset],
+        [player, offset, twitchPlayer],
     )
 
     const syncToCaster = () => {
@@ -159,19 +166,19 @@ function YoutubeIframe(props) {
                 )}
                 {my_caster.url_path !== caster && (
                     <>
-                        <div style={{ display: 'inline-block', marginRight: 8 }}>offset</div>
-                        <input
-                            onKeyDown={event => {
-                                if (event.key === 'Enter') {
-                                    syncToCaster()
-                                }
-                            }}
-                            style={{ width: 100 }}
-                            type="number"
-                            step="0.1"
-                            value={offset}
-                            onChange={event => setOffset(event.target.value)}
-                        />
+                        {/* <div style={{ display: 'inline-block', marginRight: 8 }}>offset</div> */}
+                        {/* <input */}
+                        {/*     onKeyDown={event => { */}
+                        {/*         if (event.key === 'Enter') { */}
+                        {/*             syncToCaster() */}
+                        {/*         } */}
+                        {/*     }} */}
+                        {/*     style={{ width: 100 }} */}
+                        {/*     type="number" */}
+                        {/*     step="0.1" */}
+                        {/*     value={offset} */}
+                        {/*     onChange={event => setOffset(event.target.value)} */}
+                        {/* /> */}
                         <button onClick={syncToCaster}>sync to caster</button>
                     </>
                 )}

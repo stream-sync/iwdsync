@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import { getHeight } from '../../helper/video'
 import { parents } from '../../configs/gen'
+import { createStore, useStore } from 'react-hookstore'
+
+createStore('twitchPlayer', null)
 
 export function getTwitchEmbedUrl(channel, chat = false) {
-    // if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-    //     // dev code
-    //     parents = ['localhost']
-    // }
     const parent_string = parents.map(parent => `&parent=${parent}`).join('')
     if (chat) {
         return `https://www.twitch.tv/embed/${channel}/chat?darkpopout${parent_string}`
@@ -16,7 +14,7 @@ export function getTwitchEmbedUrl(channel, chat = false) {
 }
 
 export function TwitchEmbed(props) {
-    const [player, setPlayer] = useState(null)
+    const [player, setPlayer] = useStore('twitchPlayer')
     const config = props.config
     const width = props.width || 640
     const default_resolution = props.default_resolution || "360p"
@@ -28,7 +26,6 @@ export function TwitchEmbed(props) {
                 parent: parents,
             }
             let player = new window.Twitch.Player('twitch-player-div', options)
-
             setPlayer(player)
         }
         return player
