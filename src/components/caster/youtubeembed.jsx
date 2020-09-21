@@ -70,7 +70,7 @@ function YoutubeIframe(props) {
                     onStateChange: updateSyncIfCaster,
                     onReady: event => {
                         event.target.mute()
-                        event.target.playVideo()
+                        // event.target.playVideo()
                     },
                 },
             })
