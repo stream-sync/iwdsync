@@ -30,7 +30,7 @@ function YoutubeIframe(props) {
     const [twitchPlayer] = useStore('twitchPlayer')
     const [youtube_url, setYoutubeUrl] = useState('')
     const [timing_data, setTimingData] = useState({})
-    const [offset, setOffset] = useLocalStorage('timing_offset', -9)
+    const [offset, setOffset] = useLocalStorage('timing_offset', 0)
     const [last_timing_update, setLastTimingUpdate] = useLocalStorage('last_timing_update', null)
     const caster = props.caster
     const my_caster = props.my_caster
@@ -91,7 +91,7 @@ function YoutubeIframe(props) {
                 const time_delta = my_time - caster_irl_time
                 // const synced_time = caster_youtube_time + time_delta + parseFloat(offset)
                 const constant_latency_offset = -6.3
-                const synced_time = caster_youtube_time + time_delta - latency + constant_latency_offset
+                const synced_time = caster_youtube_time + time_delta - latency + constant_latency_offset + parseFloat(-offset)
                 player.seekTo(synced_time, true)
             }
         },
@@ -167,19 +167,19 @@ function YoutubeIframe(props) {
                 )}
                 {my_caster.url_path !== caster && (
                     <>
-                        {/* <div style={{ display: 'inline-block', marginRight: 8 }}>offset</div> */}
-                        {/* <input */}
-                        {/*     onKeyDown={event => { */}
-                        {/*         if (event.key === 'Enter') { */}
-                        {/*             syncToCaster() */}
-                        {/*         } */}
-                        {/*     }} */}
-                        {/*     style={{ width: 100 }} */}
-                        {/*     type="number" */}
-                        {/*     step="0.1" */}
-                        {/*     value={offset} */}
-                        {/*     onChange={event => setOffset(event.target.value)} */}
-                        {/* /> */}
+                        <div style={{ display: 'inline-block', marginRight: 8 }}>Stream Delay</div>
+                        <input
+                            onKeyDown={event => {
+                                if (event.key === 'Enter') {
+                                    syncToCaster()
+                                }
+                            }}
+                            style={{ width: 100 }}
+                            type="number"
+                            step="0.1"
+                            value={offset}
+                            onChange={event => setOffset(event.target.value)}
+                        />
                         <button onClick={syncToCaster}>sync to caster</button>
                     </>
                 )}
