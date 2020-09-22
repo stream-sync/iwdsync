@@ -90,7 +90,7 @@ function YoutubeIframe(props) {
                 const my_time = new Date().getTime() / 1000
                 const time_delta = my_time - caster_irl_time
                 // const synced_time = caster_youtube_time + time_delta + parseFloat(offset)
-                const synced_time = caster_youtube_time + time_delta + latency
+                const synced_time = caster_youtube_time + time_delta - latency
                 player.seekTo(synced_time, true)
             }
         },
