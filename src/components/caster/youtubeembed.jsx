@@ -90,7 +90,7 @@ function YoutubeIframe(props) {
                 const my_time = new Date().getTime() / 1000
                 const time_delta = my_time - caster_irl_time
                 // const synced_time = caster_youtube_time + time_delta + parseFloat(offset)
-                const constant_latency_offset = -6
+                const constant_latency_offset = -6.3
                 const synced_time = caster_youtube_time + time_delta - latency + constant_latency_offset
                 player.seekTo(synced_time, true)
             }
