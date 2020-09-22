@@ -29,6 +29,7 @@ function YoutubeIframe(props) {
     const [player, setPlayer] = useState(null)
     const [twitchPlayer] = useStore('twitchPlayer')
     const [youtube_url, setYoutubeUrl] = useState('')
+    const [stream_delay, setStreamDelay] = useState(0)
     const [timing_data, setTimingData] = useState({})
     const [offset, setOffset] = useLocalStorage('timing_offset', 0)
     const [last_timing_update, setLastTimingUpdate] = useLocalStorage('last_timing_update', null)
@@ -39,10 +40,21 @@ function YoutubeIframe(props) {
         youtube_id = props.url.split('?v=')[1]
     }
 
+    // set pre-initialized stream delay value
+    useEffect(() => {
+        if (my_caster.stream_delay) {
+            setStreamDelay(my_caster.stream_delay)
+        }
+    }, [my_caster])
+
     const updateYoutubeUrl = () => {
         api.caster.update({ youtube_url }, props.csrf).then(() => {
             window.location.reload()
         })
+    }
+
+    const updateStreamDelay = () => {
+        api.caster.update({ stream_delay }, props.csrf)
     }
 
     const updateSyncTime = useCallback(
@@ -91,7 +103,9 @@ function YoutubeIframe(props) {
                 const time_delta = my_time - caster_irl_time
                 // const synced_time = caster_youtube_time + time_delta + parseFloat(offset)
                 const constant_latency_offset = -6.3
-                const synced_time = caster_youtube_time + time_delta - latency + constant_latency_offset + parseFloat(-offset)
+                const stream_delay = my_caster.stream_delay || 0
+                const full_delay = stream_delay + latency
+                const synced_time = caster_youtube_time + time_delta - full_delay + constant_latency_offset
                 player.seekTo(synced_time, true)
             }
         },
@@ -157,7 +171,23 @@ function YoutubeIframe(props) {
                                 onChange={event => setYoutubeUrl(event.target.value)}
                             />
                             <button onClick={updateYoutubeUrl} style={{ display: 'inline-block' }}>
-                                Set youtube URL
+                                Set Youtube URL
+                            </button>
+                            <br />
+                            <input
+                                onKeyDown={event => {
+                                    if (event.key === 'Enter') {
+                                        updateStreamDelay()
+                                    }
+                                }}
+                                style={{ display: 'inline-block' }}
+                                type="number"
+                                step='0.1'
+                                value={stream_delay}
+                                onChange={event => setStreamDelay(event.target.value)}
+                            />
+                            <button onClick={updateStreamDelay} style={{ display: 'inline-block' }}>
+                                Update Stream Delay
                             </button>
                         </div>
                         {/* <button onClick={() => updateSyncTime(player.playerInfo.currentTime)}> */}
@@ -167,19 +197,19 @@ function YoutubeIframe(props) {
                 )}
                 {my_caster.url_path !== caster && (
                     <>
-                        <div style={{ display: 'inline-block', marginRight: 8 }}>Stream Delay</div>
-                        <input
-                            onKeyDown={event => {
-                                if (event.key === 'Enter') {
-                                    syncToCaster()
-                                }
-                            }}
-                            style={{ width: 100 }}
-                            type="number"
-                            step="0.1"
-                            value={offset}
-                            onChange={event => setOffset(event.target.value)}
-                        />
+                        {/* <div style={{ display: 'inline-block', marginRight: 8 }}>Stream Delay</div> */}
+                        {/* <input */}
+                        {/*     onKeyDown={event => { */}
+                        {/*         if (event.key === 'Enter') { */}
+                        {/*             syncToCaster() */}
+                        {/*         } */}
+                        {/*     }} */}
+                        {/*     style={{ width: 100 }} */}
+                        {/*     type="number" */}
+                        {/*     step="0.1" */}
+                        {/*     value={offset} */}
+                        {/*     onChange={event => setOffset(event.target.value)} */}
+                        {/* /> */}
                         <button onClick={syncToCaster}>sync to caster</button>
                     </>
                 )}
