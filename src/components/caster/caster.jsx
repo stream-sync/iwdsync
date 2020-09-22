@@ -30,6 +30,8 @@ export function Caster(props) {
     let caster = props.match.params.caster
     const chat_width = 300
 
+    console.log('caster_data', caster_data)
+
     // get csrf
     useEffect(() => {
         api.caster.getCsrf().then(response => {
@@ -371,6 +373,7 @@ export function Caster(props) {
                                 <div style={{ position: 'relative' }}>
                                     <YoutubeEmbed
                                         caster={caster}
+                                        stream_delay={caster_data.stream_delay}
                                         width={youtube_width_actual}
                                         youtube_live_url={caster_data.youtube_url}
                                         my_caster={my_caster}

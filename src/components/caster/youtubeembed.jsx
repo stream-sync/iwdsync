@@ -19,6 +19,7 @@ export function YoutubeEmbed(props) {
                 my_caster={props.my_caster}
                 width={width}
                 url={youtube_live_url}
+                stream_delay={props.stream_delay}
                 csrf={props.csrf}
             />
         </div>
@@ -103,15 +104,16 @@ function YoutubeIframe(props) {
                 const time_delta = my_time - caster_irl_time
                 // const synced_time = caster_youtube_time + time_delta + parseFloat(offset)
                 const constant_latency_offset = -6.3
-                const stream_delay = caster.stream_delay || 0
-                console.log('stream_delay', stream_delay)
-                const full_delay = stream_delay + latency
+                console.log('props.stream_delay', props.stream_delay)
+                const caster_stream_delay = props.stream_delay || 0
+                console.log('caster_stream_delay', caster_stream_delay)
+                const full_delay = caster_stream_delay + latency
                 console.log('full_delay', full_delay)
                 const synced_time = caster_youtube_time + time_delta - full_delay + constant_latency_offset
                 player.seekTo(synced_time, true)
             }
         },
-        [player, offset, twitchPlayer],
+        [player, offset, twitchPlayer, props.stream_delay],
     )
 
     const syncToCaster = () => {
