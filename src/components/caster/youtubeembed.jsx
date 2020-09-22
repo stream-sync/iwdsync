@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useLocalStorage } from '../../helper/hooks'
 import api from '../../api/api'
 import { useStore } from 'react-hookstore'
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 export function YoutubeEmbed(props) {
     let youtube_live_url = props.youtube_live_url
@@ -56,6 +58,7 @@ function YoutubeIframe(props) {
 
     const updateStreamDelay = () => {
         api.caster.update({ stream_delay }, props.csrf)
+        NotificationManager.success('Successfully set stream delay.', 'Updated');
     }
 
     const updateSyncTime = useCallback(
@@ -141,6 +144,7 @@ function YoutubeIframe(props) {
 
     return (
         <div style={{ maxWidth: props.width, width: props.width }} className="">
+            <NotificationContainer/>
             <div className="video-container" style={{ marginBottom: 4 }}>
                 <div id="ytplayer"></div>
             </div>
