@@ -98,18 +98,12 @@ function YoutubeIframe(props) {
             if (player !== null && player.seekTo) {
                 const player_state = twitchPlayer.getPlayerState()
                 const latency = player_state.stats.videoStats.hlsLatencyBroadcaster
-                console.log(player_state)
-                console.log(latency)
                 const my_time = new Date().getTime() / 1000
                 const time_delta = my_time - caster_irl_time
-                // const synced_time = caster_youtube_time + time_delta + parseFloat(offset)
-                const constant_latency_offset = -6.3
-                console.log('props.stream_delay', props.stream_delay)
+                const constant_latency_offset = 6.3
                 const caster_stream_delay = props.stream_delay || 0
-                console.log('caster_stream_delay', caster_stream_delay)
                 const full_delay = caster_stream_delay + latency
-                console.log('full_delay', full_delay)
-                const synced_time = caster_youtube_time + time_delta - full_delay + constant_latency_offset
+                const synced_time = caster_youtube_time + time_delta - full_delay - constant_latency_offset
                 player.seekTo(synced_time, true)
             }
         },
@@ -149,14 +143,6 @@ function YoutubeIframe(props) {
         <div style={{ maxWidth: props.width, width: props.width }} className="">
             <div className="video-container" style={{ marginBottom: 4 }}>
                 <div id="ytplayer"></div>
-                {/* <iframe */}
-                {/*     title="youtube-embed" */}
-                {/*     src={props.url} */}
-                {/*     frameBorder="0" */}
-                {/*     autoplay='on' */}
-                {/*     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" */}
-                {/*     allowFullScreen */}
-                {/* ></iframe> */}
             </div>
 
             <div>

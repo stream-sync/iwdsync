@@ -30,8 +30,6 @@ export function Caster(props) {
     let caster = props.match.params.caster
     const chat_width = 300
 
-    console.log('caster_data', caster_data)
-
     // get csrf
     useEffect(() => {
         api.caster.getCsrf().then(response => {
