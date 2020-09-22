@@ -102,10 +102,12 @@ function YoutubeIframe(props) {
                 const my_time = new Date().getTime() / 1000
                 const time_delta = my_time - caster_irl_time
                 // const synced_time = caster_youtube_time + time_delta + parseFloat(offset)
-                const constant_latency_offset = -6.3
+                // const constant_latency_offset = -6.3
                 const stream_delay = my_caster.stream_delay || 0
+                console.log('stream_delay', stream_delay)
                 const full_delay = stream_delay + latency
-                const synced_time = caster_youtube_time + time_delta - full_delay + constant_latency_offset
+                console.log('full_delay', full_delay)
+                const synced_time = caster_youtube_time + time_delta - full_delay
                 player.seekTo(synced_time, true)
             }
         },
