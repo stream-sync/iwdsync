@@ -11,7 +11,7 @@ export function Instructions(props) {
                     page.
                 </li>
                 <li>
-                    You can show/hide twitch chat, move the mini player, 
+                    You can show/hide twitch chat, move the mini player,
                     separate out the twitch stream.
                 </li>
             </ul>
@@ -19,17 +19,9 @@ export function Instructions(props) {
             <h3>How to sync video</h3>
             <ul>
                 <li>
-                    Change the <b>offset</b> value below the youtube stream
-                    until the <b>game timer</b> matches with the timer in the twitch
-                    stream.
-                </li>
-                <li>
-                    Your offset value will save for the next time you use the same browser,
-                    but if the twitch delay changes you may have re-set it.
-                </li>
-                <li>
-                    You can click on the offset input field and use your up and down
-                    arrow keys to nudge the time by 0.1 seconds.
+                    Trying to implement auto-sync.  It's a bit finicky and I haven't
+                    tested it much, so it may not work properly right now.  If that's the case
+                    you'll just have to sync up manually by moving around in the youtube stream.
                 </li>
             </ul>
 
