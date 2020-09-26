@@ -17,7 +17,7 @@ export function Caster(props) {
     const [custom_chat, setCustomChat] = useLocalStorage('custom_chat', '')
     const [caster_data, setCasterData] = useState({})
     const [my_caster, setMyCaster] = useState({})
-    const [show_chat, setShowChat] = useLocalStorage('show_chat', '')
+    const [show_chat, setShowChat] = useLocalStorage('show_chat_2', 'riotgames')
     const [caster_chat, setCasterChat] = useLocalStorage('caster_chat', true)
     const [youtube_width, setYoutubeWidth] = useLocalStorage('youtube_width', 'fill with chat')
     const [twitch_width, setTwitchWidth] = useLocalStorage('twitch_width', 640)
@@ -204,6 +204,12 @@ export function Caster(props) {
                                             onClick={() => setShowChat('')}
                                         >
                                             None
+                                        </button>
+                                        <button
+                                            style={getButtonStyle(show_chat === 'riotgames')}
+                                            onClick={() => setShowChat('riotgames')}
+                                        >
+                                            Riot
                                         </button>
                                         <button
                                             style={getButtonStyle(show_chat === 'lcs')}
