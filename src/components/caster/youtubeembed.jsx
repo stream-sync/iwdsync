@@ -104,10 +104,10 @@ function YoutubeIframe(props) {
                 const latency = player_state.stats.videoStats.hlsLatencyBroadcaster
                 const my_time = new Date().getTime() / 1000
                 const time_delta = my_time - caster_irl_time
-                const constant_latency_offset = 6.4
+                const constant_latency_offset = 0
                 const caster_stream_delay = props.stream_delay || 0
                 const full_delay = caster_stream_delay + latency
-                const full_offset = time_delta - full_delay - constant_latency_offset - parsed_offset
+                const full_offset = time_delta - full_delay - constant_latency_offset + parsed_offset
                 console.log(full_offset)
                 console.log('full_offset + offset', full_offset + parsed_offset)
                 const synced_time = caster_youtube_time + full_offset
