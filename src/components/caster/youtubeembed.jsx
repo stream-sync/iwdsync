@@ -108,7 +108,8 @@ function YoutubeIframe(props) {
                 const full_delay = caster_stream_delay + latency
                 const full_offset = time_delta - full_delay - constant_latency_offset
                 console.log(full_offset)
-                const synced_time = caster_youtube_time + full_offset
+                console.log('full_offset + offset', full_offset + offset)
+                const synced_time = caster_youtube_time + full_offset + offset
                 player.seekTo(synced_time, true)
             }
         },
@@ -193,19 +194,19 @@ function YoutubeIframe(props) {
                 )}
                 {my_caster.url_path !== caster && (
                     <>
-                        {/* <div style={{ display: 'inline-block', marginRight: 8 }}>Stream Delay</div> */}
-                        {/* <input */}
-                        {/*     onKeyDown={event => { */}
-                        {/*         if (event.key === 'Enter') { */}
-                        {/*             syncToCaster() */}
-                        {/*         } */}
-                        {/*     }} */}
-                        {/*     style={{ width: 100 }} */}
-                        {/*     type="number" */}
-                        {/*     step="0.1" */}
-                        {/*     value={offset} */}
-                        {/*     onChange={event => setOffset(event.target.value)} */}
-                        {/* /> */}
+                        <div style={{ display: 'inline-block', marginRight: 8 }}>Offset</div>
+                        <input
+                            onKeyDown={event => {
+                                if (event.key === 'Enter') {
+                                    syncToCaster()
+                                }
+                            }}
+                            style={{ width: 100 }}
+                            type="number"
+                            step="0.1"
+                            value={offset}
+                            onChange={event => setOffset(event.target.value)}
+                        />
                         <button onClick={syncToCaster}>sync to caster</button>
                     </>
                 )}
