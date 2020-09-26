@@ -99,7 +99,7 @@ function YoutubeIframe(props) {
     const moveToSyncTime = useCallback(
         (caster_irl_time, caster_youtube_time) => {
             if (player !== null && player.seekTo) {
-                offset = parseFloat(offset)
+                const parsed_offset = parseFloat(offset)
                 const player_state = twitchPlayer.getPlayerState()
                 const latency = player_state.stats.videoStats.hlsLatencyBroadcaster
                 const my_time = new Date().getTime() / 1000
@@ -109,8 +109,8 @@ function YoutubeIframe(props) {
                 const full_delay = caster_stream_delay + latency
                 const full_offset = time_delta + full_delay - constant_latency_offset
                 console.log(full_offset)
-                console.log('full_offset + offset', full_offset + offset)
-                const synced_time = caster_youtube_time + full_offset + offset
+                console.log('full_offset + offset', full_offset + parsed_offset)
+                const synced_time = caster_youtube_time + full_offset + parsed_offset
                 player.seekTo(synced_time, true)
             }
         },
