@@ -2,8 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useLocalStorage } from '../../helper/hooks'
 import api from '../../api/api'
 import { useStore } from 'react-hookstore'
-import {NotificationContainer, NotificationManager} from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
+import {NotificationContainer, NotificationManager} from 'react-notifications'
+import queryString from 'query-string'
+import 'react-notifications/lib/notifications.css'
 
 export function YoutubeEmbed(props) {
     let youtube_live_url = props.youtube_live_url
@@ -40,7 +41,8 @@ function YoutubeIframe(props) {
     const my_caster = props.my_caster
     let youtube_id
     if (props.url) {
-        youtube_id = props.url.split('?v=')[1]
+        let parsed = queryString.parse(props.url.split('?')[1])
+        youtube_id = parsed['v']
     }
 
     // set pre-initialized stream delay value
